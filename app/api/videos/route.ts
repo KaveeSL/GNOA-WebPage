@@ -11,13 +11,8 @@ export async function GET() {
     return NextResponse.json(rows);
   } catch (error: any) {
     console.error('Error fetching videos:', error);
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch videos',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
-      },
-      { status: 500 }
-    );
+    // Return empty array instead of error to prevent frontend crashes
+    return NextResponse.json([]);
   }
 }
 

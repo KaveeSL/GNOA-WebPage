@@ -16,10 +16,8 @@ export async function GET() {
         return NextResponse.json(banners[0]);
     } catch (error: any) {
         console.error('Error fetching banner:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch banner' },
-            { status: 500 }
-        );
+        // Return null instead of error to prevent frontend crashes
+        return NextResponse.json(null);
     }
 }
 
