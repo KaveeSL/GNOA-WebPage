@@ -7,8 +7,8 @@ export async function PUT(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const token = request.cookies.get('admin_token')?.value;
-        if (!token || !verifyToken(token)) {
+        const auth = verifyToken(request);
+        if (!auth.authenticated) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
@@ -60,8 +60,8 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const token = request.cookies.get('admin_token')?.value;
-        if (!token || !verifyToken(token)) {
+        const auth = verifyToken(request);
+        if (!auth.authenticated) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }

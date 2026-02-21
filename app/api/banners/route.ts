@@ -4,8 +4,8 @@ import { verifyToken } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
     try {
-        const token = request.cookies.get('admin_token')?.value;
-        if (!token || !verifyToken(token)) {
+        const auth = verifyToken(request);
+        if (!auth.authenticated) {
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
