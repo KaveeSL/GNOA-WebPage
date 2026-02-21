@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import { verifyToken } from '@/lib/auth';
+import { put } from '@vercel/blob';
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,30 +34,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     // Generate unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const extension = originalName.split('.').pop()?.toLowerCase() || 'jpg';
-    const filename = `${timestamp}_${originalName}`;
+    const filename = `uploads/${timestamp}_${originalName}`;
 
-    // Ensure uploads directory exists
-    const uploadsDir = join(process.cwd(), 'public', 'assets', 'uploads');
-    try {
-      await mkdir(uploadsDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist
-    }
-
-    // Save file
-    const filepath = join(uploadsDir, filename);
-    await writeFile(filepath, buffer);
+    // Upload to Vercel Blob Storage
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+    });
 
     // Return the URL path
-    const url = `/assets/uploads/${filename}`;
-    return NextResponse.json({ url, filename });
+    return NextResponse.json({ url: blob.url, filename: blob.pathname });
   } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json(
