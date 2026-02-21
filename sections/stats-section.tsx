@@ -1,0 +1,38 @@
+import CountUp from "@/components/count-number";
+import AnimatedContent from "@/components/animated-content";
+
+export default function StatsSection() {
+    return (
+        <section className="border-y border-gray-200 py-10 px-4 md:px-16 lg:px-24 xl:px-32">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <AnimatedContent delay={0.1} className="flex flex-col items-center gap-4 text-center transition-all duration-300 hover:scale-105">
+                    <h3 className="text-4xl font-semibold font-urbanist" style={{ color: '#762727' }}>
+                        <CountUp from={0} to={31000} />+
+                    </h3>
+                    <p className="text-gray-500">Registered Members</p>
+                </AnimatedContent>
+
+                <AnimatedContent delay={0.2} className="flex flex-col items-center gap-4 text-center transition-all duration-300 hover:scale-105">
+                    <h3 className="text-4xl font-semibold font-urbanist" style={{ color: '#762727' }}>
+                        <CountUp from={0} to={44} />+
+                    </h3>
+                    <p className="text-gray-500">Years of Service</p>
+                </AnimatedContent>
+
+                <AnimatedContent delay={0.3} className="flex flex-col items-center gap-4 text-center transition-all duration-300 hover:scale-105">
+                    <h3 className="text-4xl font-semibold font-urbanist" style={{ color: '#762727' }}>
+                        <CountUp from={0} to={100} />%
+                    </h3>
+                    <p className="text-gray-500">Public Sector Coverage</p>
+                </AnimatedContent>
+
+                <AnimatedContent delay={0.4} className="flex flex-col items-center gap-4 text-center transition-all duration-300 hover:scale-105">
+                    <h3 className="text-4xl font-semibold font-urbanist" style={{ color: '#762727' }}>
+                        <CountUp from={0} to={25} />+
+                    </h3>
+                    <p className="text-gray-500">Districts Represented</p>
+                </AnimatedContent>
+            </div>
+        </section>
+    )
+}
