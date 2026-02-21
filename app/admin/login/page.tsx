@@ -93,7 +93,7 @@ export default function AdminLogin() {
                       onChange={(e) => setUsername(e.target.value)}
                       required
                       className="w-full px-4 py-2.5 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all pl-10"
-                      style={{ borderColor: '#762727', focusRingColor: '#762727' }}
+                      style={{ borderColor: '#762727' }}
                       placeholder="Enter your username"
                     />
                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -114,7 +114,7 @@ export default function AdminLogin() {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       className="w-full px-4 py-2.5 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all pl-10"
-                      style={{ borderColor: '#762727', focusRingColor: '#762727' }}
+                      style={{ borderColor: '#762727' }}
                       placeholder="Enter your password"
                     />
                     <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
