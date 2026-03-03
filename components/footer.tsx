@@ -1,8 +1,13 @@
+ "use client";
+
 import { FacebookIcon, YoutubeIcon } from "lucide-react";
 import Image from "next/image";
 import AnimatedContent from "./animated-content";
+import { useLanguage } from "./language-context";
+import { translations } from "@/lib/i18n";
 
 export default function Footer() {
+    const { language } = useLanguage();
     return (
         <footer className="px-4 md:px-16 lg:px-24 xl:px-32">
             <div className="border-x border-gray-200 px-4 md:px-12 max-w-7xl mx-auto pt-40">
@@ -22,13 +27,17 @@ export default function Footer() {
                             height={30}
                             className="h-8 w-auto"
                         />
-                        <p className="text-zinc-500 mt-4 pb-6">Government Nursing Officers' Association Sri Lanka. For further assistance or inquiries, please contact us.</p>
+                        <p className="text-zinc-500 mt-4 pb-6">
+                            {translations[language].footer.description}
+                        </p>
                         
                         <p className="text-gray-500 py-0">Copyright 2026 © GNOA Sri Lanka <br />
                         All Rights Reserved.</p>
                     </AnimatedContent>
                     <AnimatedContent distance={40} className="flex flex-col">
-                        <p className="uppercase font-semibold text-base mb-6" style={{ color: '#762727' }}>Connect With Us</p>
+                        <p className="uppercase font-semibold text-base mb-6" style={{ color: '#762727' }}>
+                            {translations[language].footer.connectWithUs}
+                        </p>
                         <div className="flex flex-col gap-3">
                             <a 
                                 href="https://www.facebook.com/gnoa.nhsl/" 
@@ -38,7 +47,7 @@ export default function Footer() {
                                 style={{ color: '#762727' }}
                             >
                                 <FacebookIcon size={20} />
-                                <span>Facebook</span>
+                                <span>{translations[language].footer.facebook}</span>
                             </a>
                             <a 
                                 href="https://www.youtube.com/@gnoa2976/featured" 
@@ -48,7 +57,7 @@ export default function Footer() {
                                 style={{ color: '#762727' }}
                             >
                                 <YoutubeIcon size={20} />
-                                <span>YouTube</span>
+                                <span>{translations[language].footer.youtube}</span>
                             </a>
                         </div>
                     </AnimatedContent>

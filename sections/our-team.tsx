@@ -1,16 +1,21 @@
+ "use client";
+
 import AnimatedContent from "@/components/animated-content";
 import SectionTitle from "@/components/section-title";
 import { team } from "@/data/team";
 import { HandshakeIcon } from "lucide-react";
+import { useLanguage } from "@/components/language-context";
+import { translations } from "@/lib/i18n";
 
 export default function OurTeamSection() {
+    const { language } = useLanguage();
     return (
         <section id="team" className="border-b border-gray-200 px-4 md:px-16 lg:px-24 xl:px-32">
             <div className="pt-20 pb-32 flex flex-col items-center max-w-7xl mx-auto justify-center border-x border-gray-200">
                 <SectionTitle
                     icon={HandshakeIcon}
-                    title="Executive Committee"
-                    subtitle="Dedicated leaders representing 31,000+ nursing officers across Sri Lanka's public healthcare system."
+                    title={translations[language].team.title}
+                    subtitle={translations[language].team.subtitle}
                 />
                 <div className="flex flex-wrap items-center justify-center gap-10 md:gap-6 mt-24">
                     {team.map((member, index) => (

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import AnimatedContent from "@/components/animated-content";
 import SectionTitle from "@/components/section-title";
 import { PlayIcon, YoutubeIcon } from "lucide-react";
+import { useLanguage } from "@/components/language-context";
+import { translations } from "@/lib/i18n";
 
 interface VideoData {
     id: number;
@@ -13,6 +15,7 @@ interface VideoData {
 }
 
 export default function VideosSection() {
+    const { language } = useLanguage();
     const [videos, setVideos] = useState<VideoData[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,10 +67,12 @@ export default function VideosSection() {
                 <div className="p-4 pt-20 md:p-20 flex flex-col items-center max-w-7xl mx-auto justify-center border-x border-gray-200">
                     <SectionTitle
                         icon={PlayIcon}
-                        title="Watch Our Videos"
-                        subtitle="Explore GNOA's activities, events, and advocacy work through our video content."
+                        title={translations[language].videos.title}
+                        subtitle={translations[language].videos.subtitle}
                     />
-                    <div className="mt-16 text-center text-gray-500">Loading...</div>
+                    <div className="mt-16 text-center text-gray-500">
+                        {translations[language].videos.loading}
+                    </div>
                 </div>
             </section>
         );
@@ -78,8 +83,8 @@ export default function VideosSection() {
             <div className="p-4 pt-20 md:p-20 flex flex-col items-center max-w-7xl mx-auto justify-center border-x border-gray-200">
                 <SectionTitle
                     icon={PlayIcon}
-                    title="Watch Our Videos"
-                    subtitle="Explore GNOA's activities, events, and advocacy work through our video content."
+                    title={translations[language].videos.title}
+                    subtitle={translations[language].videos.subtitle}
                 />
                 
                 {videos.length > 0 ? (
@@ -148,7 +153,9 @@ export default function VideosSection() {
                         </div>
                     </div>
                 ) : (
-                    <div className="mt-16 text-center text-gray-500">No videos available.</div>
+                    <div className="mt-16 text-center text-gray-500">
+                        {translations[language].videos.empty}
+                    </div>
                 )}
                 
                 <a 
@@ -159,8 +166,12 @@ export default function VideosSection() {
                     style={{ backgroundColor: '#FF0000' }}
                 >
                     <YoutubeIcon size={14} className="md:w-4 md:h-4" />
-                    <span className="hidden sm:inline">Subscribe on YouTube</span>
-                    <span className="sm:hidden">YouTube</span>
+                    <span className="hidden sm:inline">
+                        {translations[language].videos.ytFull}
+                    </span>
+                    <span className="sm:hidden">
+                        {translations[language].videos.ytShort}
+                    </span>
                 </a>
             </div>
         </section>

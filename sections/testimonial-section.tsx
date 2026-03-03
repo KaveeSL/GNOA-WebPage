@@ -5,6 +5,8 @@ import AnimatedContent from "@/components/animated-content";
 import SectionTitle from "@/components/section-title";
 import { ImageIcon, XIcon, FacebookIcon } from "lucide-react";
 import Image from "next/image";
+import { useLanguage } from "@/components/language-context";
+import { translations } from "@/lib/i18n";
 
 interface PhotoCard {
     id: number;
@@ -15,6 +17,7 @@ interface PhotoCard {
 }
 
 export default function TestimonialSection() {
+    const { language } = useLanguage();
     const [photoCards, setPhotoCards] = useState<PhotoCard[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedCard, setSelectedCard] = useState<PhotoCard | null>(null);
@@ -77,10 +80,12 @@ export default function TestimonialSection() {
                 <div className="p-4 pt-20 md:p-20 flex flex-col items-center max-w-7xl mx-auto justify-center border-x border-gray-200">
                     <SectionTitle
                         icon={ImageIcon}
-                        title="GNOA in Action"
-                        subtitle="Explore our activities, programs, and initiatives that support nursing officers across Sri Lanka."
+                        title={translations[language].testimonial.title}
+                        subtitle={translations[language].testimonial.subtitle}
                     />
-                    <div className="mt-24 text-center text-gray-500">Loading...</div>
+                    <div className="mt-24 text-center text-gray-500">
+                        {translations[language].testimonial.loading}
+                    </div>
                 </div>
             </section>
         );
@@ -91,8 +96,8 @@ export default function TestimonialSection() {
             <div className="p-4 pt-20 md:p-20 flex flex-col items-center max-w-7xl mx-auto justify-center border-x border-gray-200">
                 <SectionTitle
                     icon={ImageIcon}
-                    title="GNOA in Action"
-                    subtitle="Explore our activities, programs, and initiatives that support nursing officers across Sri Lanka."
+                    title={translations[language].testimonial.title}
+                    subtitle={translations[language].testimonial.subtitle}
                 />
                 {photoCards.length > 0 ? (
                     <>
@@ -246,7 +251,9 @@ export default function TestimonialSection() {
                         </div>
                     </>
                 ) : (
-                    <div className="mt-24 text-center text-gray-500">No photo cards available.</div>
+                    <div className="mt-24 text-center text-gray-500">
+                        {translations[language].testimonial.empty}
+                    </div>
                 )}
 
                 {/* Modal/Popup */}
@@ -304,8 +311,12 @@ export default function TestimonialSection() {
                     style={{ backgroundColor: '#1877F2' }}
                 >
                     <FacebookIcon size={14} className="md:w-4 md:h-4" />
-                    <span className="hidden sm:inline">Follow Us on Facebook</span>
-                    <span className="sm:hidden">Facebook</span>
+                    <span className="hidden sm:inline">
+                        {translations[language].testimonial.fbFull}
+                    </span>
+                    <span className="sm:hidden">
+                        {translations[language].testimonial.fbShort}
+                    </span>
                 </a>
             </div>
         </section>

@@ -1,6 +1,8 @@
 "use client";
 import { XIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLanguage } from "./language-context";
+import { translations } from "@/lib/i18n";
 
 interface BannerData {
     id: number;
@@ -11,6 +13,7 @@ interface BannerData {
 }
 
 export default function Banner() {
+    const { language } = useLanguage();
     const [banner, setBanner] = useState<BannerData | null>(null);
     const [isVisible, setIsVisible] = useState(true);
     const [isDismissed, setIsDismissed] = useState(false);
@@ -21,30 +24,23 @@ export default function Banner() {
         fetch('/api/banner')
             .then(res => {
                 if (!res.ok) {
-                    console.log('Banner API not ok:', res.status);
                     return null;
                 }
                 return res.json();
             })
             .then(data => {
-                console.log('Banner data received:', data);
-                // Handle null response (no banner) or check if banner exists and is active
                 if (data && data.id) {
-                    // Check is_active explicitly - MySQL returns 1 for true, 0 for false
                     if (data.is_active === true || data.is_active === 1 || data.is_active === '1') {
                         setIsAnimating(true);
                         setBanner(data);
-                        setIsDismissed(false); // Reset dismissed state on each page load
-                        setIsVisible(true); // Reset visible state on each page load
-                        // Trigger animation
+                        setIsDismissed(false);
+                        setIsVisible(true);
                         setTimeout(() => setIsAnimating(false), 500);
                     }
-                } else {
-                    console.log('No banner data or banner is inactive');
                 }
             })
-            .catch(err => {
-                console.error('Error fetching banner:', err);
+            .catch(() => {
+                // fail silently for banner
             });
     }, []);
 
@@ -98,9 +94,9 @@ export default function Banner() {
                         e.stopPropagation();
                         handleDismiss();
                     }}
-                    aria-label="Dismiss banner"
+                    aria-label={translations[language].banner.dismiss}
                 >
-                    <span className="sr-only">Dismiss</span>
+                    <span className="sr-only">{translations[language].banner.dismiss}</span>
                     <XIcon aria-hidden="true" className="size-4 sm:size-5 text-gray-900 pointer-events-none" />
                 </button>
             </div>
