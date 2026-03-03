@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 import AnimatedContent from '@/components/animated-content';
 import CustomIcon from '@/components/custom-icon';
@@ -157,6 +158,12 @@ export default function AdminLogin() {
           </AnimatedContent>
 
           <AnimatedContent distance={30} delay={0.3} className="mt-6 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center px-4 py-2 mb-3 rounded-full text-xs font-semibold border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              Go to GNOA Website
+            </Link>
             <p className="text-xs text-zinc-500">
               Government Nursing Officers' Association
             </p>
