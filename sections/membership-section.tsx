@@ -50,7 +50,7 @@ export default function MembershipSection() {
                         {translations[language].membership.ready}
                     </p>
                     <Link 
-                        href="https://gnoa.notesandmore.space/" 
+                        href="https://apply.gnoasl.lk/" 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-3 md:py-2.5 px-8 border text-white text-center rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg"

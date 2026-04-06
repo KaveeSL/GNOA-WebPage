@@ -30,42 +30,67 @@ export default function Navbar() {
             }
         };
 
-        // Check if banner exists and get its height
-        const checkBanner = () => {
-            const bannerElement = document.querySelector('[data-banner="true"]') as HTMLElement;
-            if (bannerElement) {
+        let resizeObserver: ResizeObserver | null = null;
+        let observedBanner: HTMLElement | null = null;
+
+        const applyBannerMetrics = (el: HTMLElement | null) => {
+            if (el) {
+                const height = el.offsetHeight;
                 setHasBanner(true);
-                // Get the actual height of the banner
-                const height = bannerElement.offsetHeight;
-                setBannerHeight(height);
+                setBannerHeight((prev) => (prev === height ? prev : height));
             } else {
                 setHasBanner(false);
-                setBannerHeight(0);
+                setBannerHeight((prev) => (prev === 0 ? prev : 0));
             }
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        // Check banner on mount and after a short delay to allow banner to render
-        checkBanner();
-        const timer = setTimeout(checkBanner, 100);
-        
-        // Use MutationObserver to watch for banner changes
-        const observer = new MutationObserver(() => {
-            checkBanner();
-            // Also check after a short delay to catch height changes
-            setTimeout(checkBanner, 50);
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        const detachResizeObserver = () => {
+            resizeObserver?.disconnect();
+            resizeObserver = null;
+            observedBanner = null;
+        };
 
-        // Also listen for window resize to recalculate banner height
-        window.addEventListener('resize', checkBanner);
+        const attachResizeObserver = (el: HTMLElement) => {
+            if (observedBanner === el && resizeObserver) return;
+            detachResizeObserver();
+            observedBanner = el;
+            resizeObserver = new ResizeObserver(() => {
+                applyBannerMetrics(el);
+            });
+            resizeObserver.observe(el);
+        };
+
+        const syncBanner = () => {
+            const el = document.querySelector('[data-banner="true"]') as HTMLElement | null;
+            if (el) {
+                applyBannerMetrics(el);
+                attachResizeObserver(el);
+            } else {
+                detachResizeObserver();
+                applyBannerMetrics(null);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        syncBanner();
+        const timer = setTimeout(syncBanner, 150);
+
+        // Only react to DOM structure changes (banner mount/unmount), not every class toggle
+        // across the page — watching all `class` mutations on body was freezing the dev tab.
+        const mo = new MutationObserver(() => {
+            syncBanner();
+        });
+        mo.observe(document.body, { childList: true, subtree: true });
+
+        window.addEventListener("resize", syncBanner);
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', checkBanner);
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", syncBanner);
             clearTimeout(timer);
-            observer.disconnect();
+            mo.disconnect();
+            detachResizeObserver();
         };
     }, []);
 
@@ -196,7 +221,7 @@ export default function Navbar() {
                             </div>
 
                             <Link 
-                                href="https://gnoa.notesandmore.space/" 
+                                href="https://apply.gnoasl.lk/" 
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="hidden md:inline-block py-2.5 px-6 shadow-[inset_0_2px_4px_rgba(255,255,255,0.6)] text-white rounded-full transition-all duration-500 cursor-pointer relative z-[104]" 
@@ -245,7 +270,7 @@ export default function Navbar() {
                         );
                     })}
                     <Link 
-                        href="https://gnoa.notesandmore.space/" 
+                        href="https://apply.gnoasl.lk/" 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-2.5 px-6 w-max text-sm shadow-[inset_0_2px_4px_rgba(255,255,255,0.6)] text-white rounded-full cursor-pointer" 
