@@ -1,11 +1,13 @@
- "use client";
+"use client";
 
 import AnimatedContent from "@/components/animated-content";
 import SectionTitle from "@/components/section-title";
+import WhatsAppIcon from "@/components/whatsapp-icon";
 import { faqs } from "@/data/faqs";
 import { ChevronDownIcon, CircleQuestionMarkIcon } from "lucide-react";
 import { useLanguage } from "@/components/language-context";
 import { translations } from "@/lib/i18n";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 export default function FaqSection() {
     const { language } = useLanguage();
@@ -47,15 +49,19 @@ export default function FaqSection() {
                     </div>
                     <div className="p-4 pt-20 md:p-20">
                         <div className="md:sticky md:top-30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-6 w-full rounded-xl mt-12 transition-all duration-300 hover:scale-105" style={{ backgroundColor: '#762727' }}>
-                            <h3 className="text-base sm:text-lg text-white text-balance">
+                            <h3 className="text-base sm:text-lg text-white text-balance pr-2">
                                 {translations[language].faq.helpText}
                             </h3>
 
                             <a
-                                href="#!"
-                                className="bg-white w-full sm:w-max shrink-0 hover:bg-gray-100 px-5 py-2 rounded-full transition-all duration-300 text-center"
+                                href={WHATSAPP_HREF}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#762727] shadow-md transition-all duration-300 hover:scale-105 hover:bg-red-50/80 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                aria-label={translations[language].faq.whatsappAria}
+                                title={translations[language].faq.whatsappAria}
                             >
-                                {translations[language].faq.contact}
+                                <WhatsAppIcon size={26} />
                             </a>
                         </div>
                     </div>

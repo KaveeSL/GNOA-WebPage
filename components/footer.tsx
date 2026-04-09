@@ -3,8 +3,10 @@
 import { FacebookIcon, YoutubeIcon } from "lucide-react";
 import Image from "next/image";
 import AnimatedContent from "./animated-content";
+import WhatsAppIcon from "@/components/whatsapp-icon";
 import { useLanguage } from "./language-context";
 import { translations } from "@/lib/i18n";
+import { WHATSAPP_HREF } from "@/lib/whatsapp";
 
 export default function Footer() {
     const { language } = useLanguage();
@@ -58,6 +60,16 @@ export default function Footer() {
                             >
                                 <YoutubeIcon size={20} />
                                 <span>{translations[language].footer.youtube}</span>
+                            </a>
+                            <a
+                                href={WHATSAPP_HREF}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 underline-offset-2 transition-all duration-300 hover:scale-105 hover:underline"
+                                style={{ color: "#762727" }}
+                            >
+                                <WhatsAppIcon size={20} />
+                                <span>{translations[language].footer.whatsapp}</span>
                             </a>
                         </div>
                     </AnimatedContent>

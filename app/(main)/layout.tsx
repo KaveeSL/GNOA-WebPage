@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Banner from "@/components/banner";
+import WhatsAppFloat from "@/components/whatsapp-float";
 import { LanguageProvider } from "@/components/language-context";
 
 export default function MainLayout({
@@ -14,6 +15,7 @@ export default function MainLayout({
       <Navbar />
       {children}
       <Footer />
+      <WhatsAppFloat />
     </LanguageProvider>
   );
 }

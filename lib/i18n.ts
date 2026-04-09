@@ -36,6 +36,7 @@ type Translations = {
       connectWithUs: string;
       facebook: string;
       youtube: string;
+      whatsapp: string;
     };
     testimonial: {
       title: string;
@@ -58,6 +59,12 @@ type Translations = {
       subtitle: string;
       helpText: string;
       contact: string;
+      whatsappAria: string;
+    };
+    whatsappFloat: {
+      hintTitle: string;
+      hintBody: string;
+      chatAria: string;
     };
     features: {
       title: string;
@@ -124,6 +131,7 @@ export const translations: Translations = {
       connectWithUs: "Connect With Us",
       facebook: "Facebook",
       youtube: "YouTube",
+      whatsapp: "WhatsApp",
     },
     testimonial: {
       title: "GNOA in Action",
@@ -149,6 +157,12 @@ export const translations: Translations = {
         "Everything you need to know about GNOA, membership, and how we support nursing officers across Sri Lanka.",
       helpText: "Still have questions? Our team is here to help you.",
       contact: "Contact Us",
+      whatsappAria: "Chat with us on WhatsApp",
+    },
+    whatsappFloat: {
+      hintTitle: "Need help?",
+      hintBody: "Tap the button to message us on WhatsApp — we are here for you.",
+      chatAria: "Open WhatsApp chat with GNOA",
     },
     // FAQ items (questions & answers)
     // Indexed to match entries in data/faqs.ts
@@ -277,6 +291,7 @@ export const translations: Translations = {
       connectWithUs: "අප හා සම්බන්ධ වන්න",
       facebook: "ෆේස්බුක්",
       youtube: "යූ ටියුබ්",
+      whatsapp: "වට්ස්ඇප්",
     },
     testimonial: {
       title: "GNOA ක්‍රියාකාරීත්වය",
@@ -303,6 +318,12 @@ export const translations: Translations = {
       helpText:
         "තවමත් ඔබට ප්‍රශ්න තිබේද? අපගේ කණ්ඩායම ඔබට ඉදිරියෙන්ම උදව් කිරීමට සූදානම්.",
       contact: "අප අමතන්න",
+      whatsappAria: "වට්ස්ඇප් මගින් අප හා සංවාදයකට එක්වන්න",
+    },
+    whatsappFloat: {
+      hintTitle: "උදව් අවශ්‍යද?",
+      hintBody: "වට්ස්ඇප් මගින් අපට පණිවිඩයක් යැවීමට බොත්තම තට්ටු කරන්න — අපි ඔබ වෙනුවෙන් සිටිමු.",
+      chatAria: "GNOA සමඟ වට්ස්ඇප් සංවාදය විවෘත කරන්න",
     },
     // @ts-expect-error - extra field, used via any
     faqItems: [
@@ -425,6 +446,7 @@ export const translations: Translations = {
       connectWithUs: "எங்களுடன் தொடர்பில் இருங்கள்",
       facebook: "பேஸ்புக்",
       youtube: "யூடியூப்",
+      whatsapp: "வாட்ஸ்அப்",
     },
     testimonial: {
       title: "செயலில் GNOA",
@@ -451,6 +473,12 @@ export const translations: Translations = {
       helpText:
         "இன்னும் கேள்விகள் உள்ளனவா? எங்கள் குழு உங்களுக்கு உதவ தயாராக உள்ளது.",
       contact: "எங்களை தொடர்பு கொள்ளவும்",
+      whatsappAria: "வாட்ஸ்அப்பில் எங்களுடன் உரையாடுங்கள்",
+    },
+    whatsappFloat: {
+      hintTitle: "உதவி வேண்டுமா?",
+      hintBody: "வாட்ஸ்அப்பில் செய்தி அனுப்ப பொத்தானைத் தட்டுங்கள் — நாங்கள் உங்களுக்காக இருக்கிறோம்.",
+      chatAria: "GNOA உடன் வாட்ஸ்அப் உரையாடலைத் திறக்கவும்",
     },
     // @ts-expect-error - extra field, used via any
     faqItems: [
