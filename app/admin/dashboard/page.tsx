@@ -367,7 +367,8 @@ export default function AdminDashboard() {
 
       const res = await fetch('/api/upload', {
         method: 'POST',
-        body: formData
+        credentials: 'include',
+        body: formData,
       });
 
       const data = await res.json();

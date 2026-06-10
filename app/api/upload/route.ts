@@ -3,6 +3,7 @@ import { verifyToken } from '@/lib/auth';
 import { put } from '@vercel/blob';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import pool from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
     const filename = `uploads/${timestamp}_${originalName}`;
 
     const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+    const buffer = Buffer.from(await file.arrayBuffer());
 
     if (blobToken) {
       const blob = await put(filename, file, {
@@ -53,13 +55,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ url: blob.url, filename: blob.pathname });
     }
 
-    // Local dev fallback when Vercel Blob is not configured
+    // Production: persist in MySQL (Vercel filesystem is read-only / ephemeral)
+    if (process.env.VERCEL) {
+      const localFilename = `${timestamp}_${originalName}`;
+      const [result] = await pool.execute(
+        'INSERT INTO uploaded_files (filename, mime_type, data) VALUES (?, ?, ?)',
+        [localFilename, file.type, buffer]
+      );
+
+      const insertResult = result as { insertId: number };
+      const url = `/api/media/${insertResult.insertId}`;
+      return NextResponse.json({ url, filename: localFilename });
+    }
+
+    // Local dev: save to public/uploads
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
     await mkdir(uploadsDir, { recursive: true });
 
     const localFilename = `${timestamp}_${originalName}`;
     const filePath = path.join(uploadsDir, localFilename);
-    const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(filePath, buffer);
 
     const url = `/uploads/${localFilename}`;

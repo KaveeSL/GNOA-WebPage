@@ -92,6 +92,15 @@ CREATE TABLE IF NOT EXISTS videos (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Uploaded files (image storage on Vercel when Blob is not configured)
+CREATE TABLE IF NOT EXISTS uploaded_files (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  filename VARCHAR(255) NOT NULL,
+  mime_type VARCHAR(100) NOT NULL,
+  data MEDIUMBLOB NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Banner table
 CREATE TABLE IF NOT EXISTS banner (
   id INT AUTO_INCREMENT PRIMARY KEY,
