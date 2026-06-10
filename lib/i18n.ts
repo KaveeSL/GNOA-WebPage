@@ -46,6 +46,18 @@ type Translations = {
       fbFull: string;
       fbShort: string;
     };
+    gallery: {
+      title: string;
+      subtitle: string;
+      loading: string;
+      empty: string;
+      photo: string;
+      photos: string;
+      viewFull: string;
+      noPhotosInSession: string;
+      fbFull: string;
+      fbShort: string;
+    };
     videos: {
       title: string;
       subtitle: string;
@@ -139,6 +151,19 @@ export const translations: Translations = {
         "Explore our activities, programs, and initiatives that support nursing officers across Sri Lanka.",
       loading: "Loading...",
       empty: "No photo cards available.",
+      fbFull: "Follow Us on Facebook",
+      fbShort: "Facebook",
+    },
+    gallery: {
+      title: "GNOA in Action",
+      subtitle:
+        "Browse photos from our conferences, events, and sessions — organized by occasion so every moment is easy to explore.",
+      loading: "Loading galleries...",
+      empty: "No photo galleries available yet.",
+      photo: "photo",
+      photos: "photos",
+      viewFull: "View full size",
+      noPhotosInSession: "No photos in this session yet.",
       fbFull: "Follow Us on Facebook",
       fbShort: "Facebook",
     },
@@ -302,6 +327,19 @@ export const translations: Translations = {
       fbFull: "ෆේස්බුක් මගින් අප හා එක් වන්න",
       fbShort: "ෆේස්බුක්",
     },
+    gallery: {
+      title: "GNOA ක්‍රියාකාරීත්වය",
+      subtitle:
+        "සමුළු, උත්සව සහ වැඩසටහන්වල ඡායාරූප — සෑම අවස්ථාවක්ම පහසුවෙන් බැලීමට වර්ගීකරණය කර ඇත.",
+      loading: "ඡායාරූප ගැලරි පූරණය වෙමින්...",
+      empty: "ඡායාරූප ගැලරි තවම නොමැත.",
+      photo: "ඡායාරූපය",
+      photos: "ඡායාරූප",
+      viewFull: "සම්පූර්ණ ප්‍රමාණයෙන් බලන්න",
+      noPhotosInSession: "මෙම සැසියේ ඡායාරූප නොමැත.",
+      fbFull: "ෆේස්බුක් මගින් අප හා එක් වන්න",
+      fbShort: "ෆේස්බුක්",
+    },
     videos: {
       title: "අපගේ වීඩියෝ බලන්න",
       subtitle:
@@ -454,6 +492,19 @@ export const translations: Translations = {
         "இலங்கை முழுவதும் தாதி அலுவலர்களை ஆதரிக்கும் எங்கள் செயல்கள், திட்டங்கள் மற்றும் முனைப்புகளை இங்கு பாருங்கள்.",
       loading: "தகவல் ஏற்றப்படுகிறது...",
       empty: "காண்பிக்க புகைப்பட அட்டைகள் இல்லை.",
+      fbFull: "பேஸ்புக்கில் எங்களை பின்தொடருங்கள்",
+      fbShort: "பேஸ்புக்",
+    },
+    gallery: {
+      title: "செயலில் GNOA",
+      subtitle:
+        "மாநாடுகள், நிகழ்வுகள் மற்றும் அமர்வுகளின் புகைப்படங்களை — ஒவ்வொரு தருணத்தையும் எளிதாகப் பார்க்க வகைப்படுத்தப்பட்டுள்ளது.",
+      loading: "புகைப்பட தொகுப்புகள் ஏற்றப்படுகின்றன...",
+      empty: "புகைப்பட தொகுப்புகள் இன்னும் இல்லை.",
+      photo: "புகைப்படம்",
+      photos: "புகைப்படங்கள்",
+      viewFull: "முழு அளவில் பார்க்க",
+      noPhotosInSession: "இந்த அமர்வில் புகைப்படங்கள் இல்லை.",
       fbFull: "பேஸ்புக்கில் எங்களை பின்தொடருங்கள்",
       fbShort: "பேஸ்புக்",
     },

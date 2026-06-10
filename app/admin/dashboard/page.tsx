@@ -1,21 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { PlusIcon, EditIcon, TrashIcon, LogOutIcon, UploadIcon, ImageIcon, VideoIcon, MegaphoneIcon, ChevronUpIcon, ChevronDownIcon } from 'lucide-react';
+import { PlusIcon, EditIcon, TrashIcon, LogOutIcon, ImageIcon, VideoIcon, MegaphoneIcon, ChevronUpIcon, ChevronDownIcon } from 'lucide-react';
 import { toast } from '@/components/toast';
 import ToastContainer from '@/components/toast';
 import ConfirmDialog from '@/components/confirm-dialog';
-
-interface PhotoCard {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  category?: string;
-  display_order: number;
-}
+import GalleryManager from '@/components/admin/gallery-manager';
+import type { IPhotoGallery } from '@/types';
 
 interface Video {
   id: number;
@@ -37,20 +30,15 @@ interface Banner {
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<'photos' | 'videos' | 'banner'>('photos');
-  const [photoCards, setPhotoCards] = useState<PhotoCard[]>([]);
+  const [galleries, setGalleries] = useState<IPhotoGallery[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showPhotoForm, setShowPhotoForm] = useState(false);
   const [showVideoForm, setShowVideoForm] = useState(false);
   const [showBannerForm, setShowBannerForm] = useState(false);
-  const [editingPhoto, setEditingPhoto] = useState<PhotoCard | null>(null);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
   const [editingBanner, setEditingBanner] = useState<Banner | null>(null);
-  const [uploadingImage, setUploadingImage] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string>('');
   const [deleteError, setDeleteError] = useState<string>('');
   
   // Confirmation dialog state
@@ -67,15 +55,6 @@ export default function AdminDashboard() {
     title: '',
     message: '',
     onConfirm: () => {},
-  });
-
-  // Photo form state
-  const [photoForm, setPhotoForm] = useState({
-    image: '',
-    title: '',
-    description: '',
-    category: '',
-    display_order: 0
   });
 
   // Video form state
@@ -110,15 +89,15 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [photosRes, videosRes, bannersRes] = await Promise.all([
-        fetch('/api/photo-cards'),
+      const [galleriesRes, videosRes, bannersRes] = await Promise.all([
+        fetch('/api/galleries'),
         fetch('/api/videos'),
         fetch('/api/banners', { credentials: 'include' })
       ]);
-      const photos = await photosRes.json();
+      const galleriesData = await galleriesRes.json();
       const videos = await videosRes.json();
       const banners = await bannersRes.json();
-      setPhotoCards(photos);
+      setGalleries(galleriesData);
       setVideos(videos);
       setBanners(banners);
     } catch (error) {
@@ -171,54 +150,6 @@ export default function AdminDashboard() {
     return urlOrId.trim();
   };
 
-  const handlePhotoSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate image is provided for new cards
-    if (!editingPhoto && !photoForm.image) {
-      toast.error('Please upload an image file');
-      return;
-    }
-
-    // When editing, if no new image uploaded, keep the existing one
-    const formData = { ...photoForm };
-    if (editingPhoto && !imagePreview && photoForm.image) {
-      // Keep existing image if no new one was uploaded
-      formData.image = photoForm.image;
-    }
-
-    const url = editingPhoto 
-      ? `/api/photo-cards/${editingPhoto.id}`
-      : '/api/photo-cards';
-    const method = editingPhoto ? 'PUT' : 'POST';
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setShowPhotoForm(false);
-        setEditingPhoto(null);
-        setPhotoForm({ image: '', title: '', description: '', category: '', display_order: 0 });
-        setImagePreview('');
-        if (fileInputRef.current) fileInputRef.current.value = '';
-        fetchData();
-        toast.success(editingPhoto ? 'Photo card updated successfully' : 'Photo card created successfully');
-      } else {
-        toast.error(data.error || data.message || 'Failed to save photo card');
-      }
-    } catch (error: any) {
-      console.error('Error saving photo card:', error);
-      toast.error('Failed to save photo card: ' + (error.message || 'Unknown error'));
-    }
-  };
-
   const handleVideoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -261,43 +192,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDeletePhoto = async (id: number) => {
-    setConfirmDialog({
-      isOpen: true,
-      title: 'Delete Photo Card',
-      message: 'Are you sure you want to delete this photo card? This action cannot be undone.',
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      type: 'danger',
-      onConfirm: async () => {
-        setConfirmDialog({ ...confirmDialog, isOpen: false });
-        setDeleteError('');
-        try {
-          const res = await fetch(`/api/photo-cards/${id}`, { 
-            method: 'DELETE',
-            credentials: 'include'
-          });
-          
-          const data = await res.json();
-          
-          if (res.ok) {
-            fetchData();
-            toast.success('Photo card deleted successfully');
-          } else {
-            const errorMsg = data.error || data.message || 'Failed to delete photo card';
-            setDeleteError(errorMsg);
-            toast.error(errorMsg);
-          }
-        } catch (error: any) {
-          console.error('Error deleting photo card:', error);
-          const errorMsg = error.message || 'Failed to delete photo card. Please try again.';
-          setDeleteError(errorMsg);
-          toast.error(errorMsg);
-        }
-      },
-    });
-  };
-
   const handleDeleteVideo = async (id: number) => {
     setConfirmDialog({
       isOpen: true,
@@ -335,75 +229,6 @@ export default function AdminDashboard() {
     });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const file = e.target.files?.[0];
-    if (!file) {
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
-    }
-
-    // Validate file type
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-    if (!allowedTypes.includes(file.type)) {
-      toast.error('Invalid file type. Only PNG, JPG, and JPEG are allowed.');
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('File size too large. Maximum size is 5MB.');
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      return;
-    }
-
-    setUploadingImage(true);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        credentials: 'include',
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setPhotoForm({ ...photoForm, image: data.url });
-        setImagePreview(data.url);
-      } else {
-        toast.error(data.error || 'Failed to upload image');
-        if (fileInputRef.current) fileInputRef.current.value = '';
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      toast.error('Failed to upload image');
-      if (fileInputRef.current) fileInputRef.current.value = '';
-    } finally {
-      setUploadingImage(false);
-    }
-  };
-
-  const openEditPhoto = (photo: PhotoCard) => {
-    setEditingPhoto(photo);
-    setPhotoForm({
-      image: photo.image,
-      title: photo.title,
-      description: photo.description,
-      category: photo.category || '',
-      display_order: photo.display_order
-    });
-    setImagePreview(photo.image);
-    setShowPhotoForm(true);
-    setTimeout(() => {
-      document.getElementById('photo-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
-  };
-
   const openEditVideo = (video: Video) => {
     setEditingVideo(video);
     setVideoForm({
@@ -416,14 +241,6 @@ export default function AdminDashboard() {
     setTimeout(() => {
       document.getElementById('video-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
-  };
-
-  const cancelPhotoForm = () => {
-    setShowPhotoForm(false);
-    setEditingPhoto(null);
-    setPhotoForm({ image: '', title: '', description: '', category: '', display_order: 0 });
-    setImagePreview('');
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleBannerSubmit = async (e: React.FormEvent) => {
@@ -514,73 +331,6 @@ export default function AdminDashboard() {
     setShowBannerForm(false);
     setEditingBanner(null);
     setBannerForm({ message: '', link_text: '', link_url: '', is_active: true });
-  };
-
-  const handleMovePhoto = async (photoId: number, direction: 'up' | 'down') => {
-    const sortedPhotos = [...photoCards].sort((a, b) => {
-      // Primary sort by display_order, secondary by id for consistency
-      if (a.display_order !== b.display_order) {
-        return a.display_order - b.display_order;
-      }
-      return a.id - b.id;
-    });
-    
-    const currentIndex = sortedPhotos.findIndex(p => p.id === photoId);
-    
-    if (currentIndex === -1) {
-      console.error('Photo not found:', photoId);
-      return;
-    }
-    
-    if (direction === 'up' && currentIndex === 0) {
-      return;
-    }
-    if (direction === 'down' && currentIndex === sortedPhotos.length - 1) {
-      return;
-    }
-    
-    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    
-    // Create new array with swapped items
-    const newOrder = [...sortedPhotos];
-    [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
-    
-    // Reassign sequential display_order values (0, 1, 2, 3...)
-    const updates = newOrder.map((photo, idx) => ({
-      ...photo,
-      display_order: idx
-    }));
-    
-    try {
-      // Update all photos with new sequential display_order values
-      const updatePromises = updates.map(photo => 
-        fetch(`/api/photo-cards/${photo.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({
-            image: photo.image || '',
-            title: photo.title || '',
-            description: photo.description || '',
-            category: photo.category || null,
-            display_order: photo.display_order
-          })
-        })
-      );
-      
-      const responses = await Promise.all(updatePromises);
-      const results = await Promise.all(responses.map(r => r.json()));
-      
-      const failed = results.filter((r, i) => !responses[i].ok);
-      if (failed.length > 0) {
-        throw new Error(failed[0].error || 'Failed to update some photos');
-      }
-      
-      fetchData();
-    } catch (error: any) {
-      console.error('Error reordering photo:', error);
-      toast.error(error.message || 'Failed to reorder photo');
-    }
   };
 
   const handleMoveVideo = async (videoId: number, direction: 'up' | 'down') => {
@@ -728,7 +478,7 @@ export default function AdminDashboard() {
               style={activeTab === 'photos' ? { borderBottom: '3px solid #762727', color: '#762727' } : {}}
             >
               <ImageIcon size={18} />
-              Photo Cards ({photoCards.length})
+              Photo Galleries ({galleries.length})
             </button>
             <button
               onClick={() => setActiveTab('videos')}
@@ -763,236 +513,7 @@ export default function AdminDashboard() {
           )}
 
           {activeTab === 'photos' && (
-            <div>
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
-                <h2 className="text-xl md:text-2xl font-bold" style={{ color: '#762727' }}>Manage Photo Cards</h2>
-                <button
-                  onClick={() => {
-                    setEditingPhoto(null);
-                    setPhotoForm({ image: '', title: '', description: '', category: '', display_order: 0 });
-                    setImagePreview('');
-                    setShowPhotoForm(!showPhotoForm);
-                    if (!showPhotoForm) {
-                      setTimeout(() => {
-                        document.getElementById('photo-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }, 100);
-                    }
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: '#762727' }}
-                >
-                  <PlusIcon size={16} />
-                  {showPhotoForm ? 'Cancel' : 'Add Photo Card'}
-                </button>
-              </div>
-
-              {/* Photo Form */}
-              {showPhotoForm && (
-                <div id="photo-form" className="bg-white/70 backdrop-blur-md rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.10)] p-4 md:p-6 mb-6 border-2 transition-all duration-300 hover:shadow-xl" style={{ borderColor: '#762727' }}>
-                  <h3 className="text-lg md:text-xl font-bold mb-4" style={{ color: '#762727' }}>
-                    {editingPhoto ? 'Edit Photo Card' : 'Add New Photo Card'}
-                  </h3>
-                  <form onSubmit={handlePhotoSubmit} className="space-y-4" noValidate>
-                    {/* Image Upload Field - Improved UI */}
-                    <div>
-                      <label className="block text-xs font-semibold mb-2" style={{ color: '#762727' }}>
-                        Image Upload (PNG, JPG, JPEG only)
-                      </label>
-                      <div className="relative">
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/png,image/jpeg,image/jpg"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                          id="image-upload-input"
-                          disabled={uploadingImage}
-                        />
-                        <label
-                          htmlFor="image-upload-input"
-                          className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
-                            uploadingImage 
-                              ? 'opacity-50 cursor-not-allowed' 
-                              : 'hover:bg-gray-50 hover:border-solid'
-                          }`}
-                          style={{ 
-                            borderColor: uploadingImage ? '#9ca3af' : '#762727',
-                            backgroundColor: uploadingImage ? '#f9fafb' : 'transparent'
-                          }}
-                        >
-                          {uploadingImage ? (
-                            <div className="flex flex-col items-center gap-2">
-                              <div className="animate-spin rounded-full h-8 w-8 border-3 border-t-transparent" style={{ borderColor: '#762727' }}></div>
-                              <p className="text-xs font-medium" style={{ color: '#762727' }}>Uploading...</p>
-                            </div>
-                          ) : imagePreview ? (
-                            <div className="w-full h-full p-3">
-                              <img 
-                                src={imagePreview} 
-                                alt="Preview" 
-                                className="w-full h-full object-cover rounded-lg"
-                              />
-                              <p className="text-xs text-center mt-1 text-gray-600">Click to change</p>
-                            </div>
-                          ) : photoForm.image && !imagePreview ? (
-                            <div className="w-full h-full p-3">
-                              <img 
-                                src={photoForm.image} 
-                                alt="Current" 
-                                className="w-full h-full object-cover rounded-lg"
-                              />
-                              <p className="text-xs text-center mt-1 text-gray-600">Click to change</p>
-                            </div>
-                          ) : (
-                            <div className="flex flex-col items-center gap-2 p-4">
-                              <div className="p-3 rounded-full" style={{ backgroundColor: 'rgba(118, 39, 39, 0.1)' }}>
-                                <UploadIcon size={24} style={{ color: '#762727' }} />
-                              </div>
-                              <div className="text-center">
-                                <p className="text-xs font-semibold" style={{ color: '#762727' }}>Click to upload</p>
-                                <p className="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (Max 5MB)</p>
-                              </div>
-                            </div>
-                          )}
-                        </label>
-                      </div>
-                      {!editingPhoto && !photoForm.image && (
-                        <p className="text-xs text-red-600 mt-2">* Image is required</p>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: '#762727' }}>Title *</label>
-                        <input
-                          type="text"
-                          value={photoForm.title}
-                          onChange={(e) => setPhotoForm({ ...photoForm, title: e.target.value })}
-                          className="w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all"
-                          style={{ borderColor: '#762727' }}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-semibold mb-1.5" style={{ color: '#762727' }}>Category</label>
-                        <input
-                          type="text"
-                          value={photoForm.category}
-                          onChange={(e) => setPhotoForm({ ...photoForm, category: e.target.value })}
-                          className="w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all"
-                          style={{ borderColor: '#762727' }}
-                          placeholder="e.g., Training, Advocacy"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#762727' }}>Description *</label>
-                      <textarea
-                        value={photoForm.description}
-                        onChange={(e) => setPhotoForm({ ...photoForm, description: e.target.value })}
-                        className="w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all resize-none"
-                        style={{ borderColor: '#762727' }}
-                        rows={3}
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold mb-1.5" style={{ color: '#762727' }}>Display Order</label>
-                      <input
-                        type="number"
-                        value={photoForm.display_order}
-                        onChange={(e) => setPhotoForm({ ...photoForm, display_order: parseInt(e.target.value) || 0 })}
-                        className="w-full px-3 py-2 text-sm border-2 rounded-lg focus:ring-2 focus:ring-offset-1 focus:outline-none transition-all"
-                        style={{ borderColor: '#762727' }}
-                        min="0"
-                      />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 pt-3 border-t-2" style={{ borderColor: '#762727' }}>
-                      <button
-                        type="submit"
-                        disabled={uploadingImage}
-                        className="flex-1 px-4 py-2 rounded-full text-white text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                        style={{ backgroundColor: '#762727' }}
-                      >
-                        {uploadingImage ? 'Uploading...' : (editingPhoto ? 'Update' : 'Create')}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={cancelPhotoForm}
-                        className="px-4 py-2 rounded-full border-2 text-sm font-semibold transition-all duration-300 hover:scale-105"
-                        style={{ borderColor: '#762727', color: '#762727' }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              )}
-
-              {/* Photo Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[...photoCards].sort((a, b) => a.display_order - b.display_order).map((photo, index, sortedArray) => (
-                  <div key={photo.id} className="bg-white/70 backdrop-blur-md rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.10)] overflow-hidden transition-all duration-300">
-                    <div className="h-40 bg-gray-200 relative overflow-hidden">
-                      <img src={photo.image} alt={photo.title} className="w-full h-full object-cover" />
-                      <div className="absolute top-2 right-2">
-                        {photo.category && (
-                          <span className="px-2 py-1 text-xs font-semibold text-white rounded-full backdrop-blur-sm" style={{ backgroundColor: 'rgba(118, 39, 39, 0.8)' }}>
-                            {photo.category}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-bold text-base flex-1" style={{ color: '#762727' }}>{photo.title}</h3>
-                        <div className="flex flex-col gap-1 ml-2">
-                          <button
-                            onClick={() => handleMovePhoto(photo.id, 'up')}
-                            disabled={index === 0}
-                            className="p-1 rounded hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                            title="Move up"
-                          >
-                            <ChevronUpIcon size={16} style={{ color: '#762727' }} />
-                          </button>
-                          <button
-                            onClick={() => handleMovePhoto(photo.id, 'down')}
-                            disabled={index === sortedArray.length - 1}
-                            className="p-1 rounded hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                            title="Move down"
-                          >
-                            <ChevronDownIcon size={16} style={{ color: '#762727' }} />
-                          </button>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-600 mb-3 line-clamp-2">{photo.description}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs text-gray-500">Order: {photo.display_order}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => openEditPhoto(photo)}
-                          className="flex-1 px-3 py-1.5 text-xs rounded-lg border-2 transition-all duration-300 hover:scale-105 font-semibold"
-                          style={{ borderColor: '#762727', color: '#762727' }}
-                        >
-                          <EditIcon size={14} className="inline mr-1" />
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeletePhoto(photo.id)}
-                          className="px-3 py-1.5 text-xs rounded-lg bg-red-500 text-white transition-all duration-300 hover:scale-105 hover:bg-red-600 font-semibold"
-                        >
-                          <TrashIcon size={14} className="inline" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <GalleryManager galleries={galleries} onRefresh={fetchData} />
           )}
 
           {activeTab === 'videos' && (

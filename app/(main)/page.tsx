@@ -4,7 +4,7 @@ import HeroSection from "@/sections/hero-section";
 import MembershipSection from "@/sections/membership-section";
 import OurTeamSection from "@/sections/our-team";
 import StatsSection from "@/sections/stats-section";
-import TestimonialSection from "@/sections/testimonial-section";
+import GallerySection from "@/sections/gallery-section";
 import VideosSection from "@/sections/videos-section";
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
             <VideosSection />
             <FaqSection />
             <OurTeamSection />
-            <TestimonialSection />
+            <GallerySection />
         </main>
     );
 }

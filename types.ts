@@ -61,3 +61,18 @@ export interface IPhotoCard {
     description: string;
     category?: string;
 };
+
+export interface IGalleryPhoto {
+    id: number;
+    gallery_id: number;
+    image: string;
+    display_order: number;
+}
+
+export interface IPhotoGallery {
+    id: number;
+    title: string;
+    description: string | null;
+    display_order: number;
+    photos: IGalleryPhoto[];
+}

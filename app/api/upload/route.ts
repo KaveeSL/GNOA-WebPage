@@ -61,10 +61,9 @@ export async function POST(request: NextRequest) {
       const [result] = await pool.execute(
         'INSERT INTO uploaded_files (filename, mime_type, data) VALUES (?, ?, ?)',
         [localFilename, file.type, buffer]
-      );
+      ) as [{ insertId: number }, unknown];
 
-      const insertResult = result as { insertId: number };
-      const url = `/api/media/${insertResult.insertId}`;
+      const url = `/api/media/${result.insertId}?v=${timestamp}`;
       return NextResponse.json({ url, filename: localFilename });
     }
 
@@ -76,7 +75,8 @@ export async function POST(request: NextRequest) {
     const filePath = path.join(uploadsDir, localFilename);
     await writeFile(filePath, buffer);
 
-    const url = `/uploads/${localFilename}`;
+    // Serve via API so new files are available immediately (no dev-server restart)
+    const url = `/api/uploads/${localFilename}?v=${timestamp}`;
     return NextResponse.json({ url, filename: `uploads/${localFilename}` });
   } catch (error: any) {
     console.error('Upload error:', error);

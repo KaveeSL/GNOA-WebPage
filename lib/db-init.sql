@@ -39,6 +39,26 @@ CREATE TABLE IF NOT EXISTS videos (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Photo galleries (conference / event sessions)
+CREATE TABLE IF NOT EXISTS photo_galleries (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  display_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Photos within a gallery session
+CREATE TABLE IF NOT EXISTS gallery_photos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  gallery_id INT NOT NULL,
+  image VARCHAR(500) NOT NULL,
+  display_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (gallery_id) REFERENCES photo_galleries(id) ON DELETE CASCADE
+);
+
 -- Uploaded files (used on Vercel when Blob storage is not configured)
 CREATE TABLE IF NOT EXISTS uploaded_files (
   id INT AUTO_INCREMENT PRIMARY KEY,
