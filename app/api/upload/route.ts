@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 import { put } from '@vercel/blob';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,14 +42,28 @@ export async function POST(request: NextRequest) {
     const extension = originalName.split('.').pop()?.toLowerCase() || 'jpg';
     const filename = `uploads/${timestamp}_${originalName}`;
 
-    // Upload to Vercel Blob Storage
-    const blob = await put(filename, file, {
-      access: 'public',
-      contentType: file.type,
-    });
+    const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
-    // Return the URL path
-    return NextResponse.json({ url: blob.url, filename: blob.pathname });
+    if (blobToken) {
+      const blob = await put(filename, file, {
+        access: 'public',
+        contentType: file.type,
+        token: blobToken,
+      });
+      return NextResponse.json({ url: blob.url, filename: blob.pathname });
+    }
+
+    // Local dev fallback when Vercel Blob is not configured
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    await mkdir(uploadsDir, { recursive: true });
+
+    const localFilename = `${timestamp}_${originalName}`;
+    const filePath = path.join(uploadsDir, localFilename);
+    const buffer = Buffer.from(await file.arrayBuffer());
+    await writeFile(filePath, buffer);
+
+    const url = `/uploads/${localFilename}`;
+    return NextResponse.json({ url, filename: `uploads/${localFilename}` });
   } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json(
