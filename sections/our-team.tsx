@@ -19,10 +19,10 @@ export default function OurTeamSection() {
                 />
                 <div className="flex flex-wrap items-center justify-center gap-10 md:gap-6 mt-24">
                     {team.map((member, index) => (
-                        <AnimatedContent delay={index * 0.10} key={index} className="flex flex-col transition-all duration-300 hover:scale-105">
+                        <AnimatedContent delay={index * 0.04} distance={12} key={index} className="flex flex-col">
                             <div className="relative overflow-hidden rounded-lg group">
-                                <img src={member.image} alt={member.name} className="w-52 h-64 object-cover rounded-lg transition-transform duration-300 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <img src={member.image} alt={member.name} className="w-52 h-64 object-cover rounded-lg transition-transform duration-200 group-hover:scale-105" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                             </div>
                             <h3 className="text-lg font-medium mt-2" style={{ color: '#762727' }}>{member.name}</h3>
                             <p className="text-zinc-500 font-medium">{member.role}</p>

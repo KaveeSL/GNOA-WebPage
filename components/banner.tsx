@@ -35,7 +35,7 @@ export default function Banner() {
                         setBanner(data);
                         setIsDismissed(false);
                         setIsVisible(true);
-                        setTimeout(() => setIsAnimating(false), 500);
+                        setTimeout(() => setIsAnimating(false), 250);
                     }
                 }
             })
@@ -58,7 +58,7 @@ export default function Banner() {
     return (
         <div 
             data-banner="true" 
-            className="fixed top-0 left-0 right-0 z-[101] isolate flex items-center justify-center gap-x-2 sm:gap-x-4 md:gap-x-6 bg-gray-50 px-2 py-2 sm:px-3.5 sm:py-2.5 border-b border-gray-200 w-full min-h-[49px] md:min-h-[57px] animate-[slideDown_0.5s_ease-out] pointer-events-auto"
+            className="fixed top-0 left-0 right-0 z-[101] isolate flex items-center justify-center gap-x-2 sm:gap-x-4 md:gap-x-6 bg-gray-50 px-2 py-2 sm:px-3.5 sm:py-2.5 border-b border-gray-200 w-full min-h-[49px] md:min-h-[57px] animate-[slideDown_0.25s_ease-out] pointer-events-auto"
             style={{ pointerEvents: 'auto' }}
         >
             <div
@@ -100,7 +100,7 @@ export default function Banner() {
                     <XIcon aria-hidden="true" className="size-4 sm:size-5 text-gray-900 pointer-events-none" />
                 </button>
             </div>
-            <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-x-2 sm:gap-x-4 gap-y-2 max-w-4xl mx-auto px-8 sm:px-12">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-2 max-w-4xl mx-auto px-10 sm:px-14 py-0.5">
                 <p className="text-xs sm:text-sm leading-5 sm:leading-6 text-gray-900 text-center break-words">
                     {banner.message}
                 </p>
@@ -109,7 +109,7 @@ export default function Banner() {
                         href={banner.link_url}
                         target={banner.link_url.startsWith('http') ? '_blank' : '_self'}
                         rel={banner.link_url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="flex-none rounded-full px-2.5 py-1 sm:px-3.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-300 whitespace-nowrap"
+                        className="relative z-[1] flex-none rounded-full px-3 py-1.5 sm:px-3.5 text-xs sm:text-sm font-semibold text-white shadow-sm hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 whitespace-nowrap"
                         style={{ backgroundColor: '#762727' }}
                     >
                         {banner.link_text} <span aria-hidden="true" className="hidden sm:inline">&rarr;</span>

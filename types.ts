@@ -76,3 +76,23 @@ export interface IPhotoGallery {
     display_order: number;
     photos: IGalleryPhoto[];
 }
+
+export interface INewsImage {
+    id: number;
+    news_id: number;
+    image: string;
+    display_order: number;
+}
+
+export interface INewsItem {
+    id: number;
+    title: string;
+    summary: string | null;
+    content: string;
+    is_published: boolean | number;
+    display_order: number;
+    published_at: string | null;
+    created_at?: string;
+    updated_at?: string;
+    images: INewsImage[];
+}

@@ -6,6 +6,7 @@ type Translations = {
       home: string;
       about: string;
       leadership: string;
+      news: string;
       inAction: string;
       videos: string;
       joinUs: string;
@@ -38,6 +39,15 @@ type Translations = {
       youtube: string;
       whatsapp: string;
     };
+    location: {
+      title: string;
+      subtitle: string;
+      badge: string;
+      officeName: string;
+      address: string;
+      openMaps: string;
+      mapTitle: string;
+    };
     testimonial: {
       title: string;
       subtitle: string;
@@ -57,6 +67,17 @@ type Translations = {
       noPhotosInSession: string;
       fbFull: string;
       fbShort: string;
+      featured: string;
+      viewPhotos: string;
+      viewingPhotos: string;
+      showMore: string;
+      showLess: string;
+      selectedSession: string;
+      viewAll: string;
+      backToGallery: string;
+      backHome: string;
+      notFound: string;
+      photoGallery: string;
     };
     videos: {
       title: string;
@@ -65,6 +86,19 @@ type Translations = {
       empty: string;
       ytFull: string;
       ytShort: string;
+    };
+    news: {
+      title: string;
+      subtitle: string;
+      loading: string;
+      empty: string;
+      featured: string;
+      readMore: string;
+      viewAll: string;
+      backToNews: string;
+      backHome: string;
+      notFound: string;
+      gallery: string;
     };
     faq: {
       title: string;
@@ -110,6 +144,7 @@ export const translations: Translations = {
       home: "Home",
       about: "About",
       leadership: "Leadership",
+      news: "News",
       inAction: "In Action",
       videos: "Videos",
       joinUs: "Join Us",
@@ -145,6 +180,17 @@ export const translations: Translations = {
       youtube: "YouTube",
       whatsapp: "WhatsApp",
     },
+    location: {
+      title: "Our Headquarters",
+      subtitle:
+        "Visit the GNOA head office — find us on the map and get directions in Google Maps.",
+      badge: "Head office",
+      officeName: "GNOA Headquarters",
+      address:
+        "Government Nursing Officers' Association (GNOA)\nColombo, Sri Lanka",
+      openMaps: "Open in Google Maps",
+      mapTitle: "GNOA Headquarters location map",
+    },
     testimonial: {
       title: "GNOA in Action",
       subtitle:
@@ -166,6 +212,17 @@ export const translations: Translations = {
       noPhotosInSession: "No photos in this session yet.",
       fbFull: "Follow Us on Facebook",
       fbShort: "Facebook",
+      featured: "Featured session",
+      viewPhotos: "View photos",
+      viewingPhotos: "Showing photos below",
+      showMore: "Show more",
+      showLess: "Show less",
+      selectedSession: "Now viewing",
+      viewAll: "View all sessions",
+      backToGallery: "Back to galleries",
+      backHome: "Back to home",
+      notFound: "This photo session could not be found.",
+      photoGallery: "Photos",
     },
     videos: {
       title: "Watch Our Videos",
@@ -175,6 +232,20 @@ export const translations: Translations = {
       empty: "No videos available.",
       ytFull: "Subscribe on YouTube",
       ytShort: "YouTube",
+    },
+    news: {
+      title: "Latest News",
+      subtitle:
+        "Updates, announcements, and stories from GNOA — advocacy wins, events, and what matters to nursing officers.",
+      loading: "Loading news...",
+      empty: "No news published yet. Check back soon.",
+      featured: "Featured story",
+      readMore: "Read story",
+      viewAll: "View all news",
+      backToNews: "Back to news",
+      backHome: "Back to home",
+      notFound: "This news story could not be found.",
+      gallery: "Photo gallery",
     },
     faq: {
       title: "Frequently Asked Questions",
@@ -283,6 +354,7 @@ export const translations: Translations = {
       home: "මුල් පිටුව",
       about: "අප ගැන",
       leadership: "නායකත්වය",
+      news: "පුවත්",
       inAction: "ක්‍රියාකාරීත්වය",
       videos: "වීඩියෝ",
       joinUs: "අප සමඟ එක්වන්න",
@@ -318,6 +390,17 @@ export const translations: Translations = {
       youtube: "යූ ටියුබ්",
       whatsapp: "වට්ස්ඇප්",
     },
+    location: {
+      title: "අපගේ මූලස්ථානය",
+      subtitle:
+        "GNOA මූලස්ථානය සොයා ගන්න — සිතියමේ බලා Google Maps මගින් මාර්ගෝපදේශ ලබා ගන්න.",
+      badge: "මූලස්ථානය",
+      officeName: "GNOA මූලස්ථානය",
+      address:
+        "රාජ්‍ය හෙද නිලධාරීන්ගේ සංගමය (GNOA)\nකොළඹ, ශ්‍රී ලංකාව",
+      openMaps: "Google Maps හි විවෘත කරන්න",
+      mapTitle: "GNOA මූලස්ථාන ස්ථාන සිතියම",
+    },
     testimonial: {
       title: "GNOA ක්‍රියාකාරීත්වය",
       subtitle:
@@ -339,6 +422,17 @@ export const translations: Translations = {
       noPhotosInSession: "මෙම සැසියේ ඡායාරූප නොමැත.",
       fbFull: "ෆේස්බුක් මගින් අප හා එක් වන්න",
       fbShort: "ෆේස්බුක්",
+      featured: "ප්‍රධාන සැසිය",
+      viewPhotos: "ඡායාරූප බලන්න",
+      viewingPhotos: "ඡායාරූප පහතින් පෙන්වයි",
+      showMore: "තවත් පෙන්වන්න",
+      showLess: "අඩුවෙන් පෙන්වන්න",
+      selectedSession: "දැන් බලමින්",
+      viewAll: "සියලු සැසි බලන්න",
+      backToGallery: "ගැලරි වෙත ආපසු",
+      backHome: "මුල් පිටුවට",
+      notFound: "මෙම ඡායාරූප සැසිය සොයාගත නොහැකි විය.",
+      photoGallery: "ඡායාරූප",
     },
     videos: {
       title: "අපගේ වීඩියෝ බලන්න",
@@ -348,6 +442,20 @@ export const translations: Translations = {
       empty: "වීඩියෝ දත්ත නොමැත.",
       ytFull: "යූ ටියුබ් නාලිකාවට දායක වන්න",
       ytShort: "යූ ටියුබ්",
+    },
+    news: {
+      title: "නවතම පුවත්",
+      subtitle:
+        "GNOA වෙතින් යාවත්කාලීන කිරීම්, නිවේදන සහ කතා — හඬකාමතා ජයග්‍රහණ, උත්සව සහ හෙද නිලධාරීන්ට වැදගත් දේ.",
+      loading: "පුවත් පූරණය වෙමින්...",
+      empty: "තවම පුවත් පළ කර නැත. ඉක්මනින් නැවත පරීක්ෂා කරන්න.",
+      featured: "ප්‍රධාන කතාව",
+      readMore: "කතාව කියවන්න",
+      viewAll: "සියලු පුවත් බලන්න",
+      backToNews: "පුවත් වෙත ආපසු",
+      backHome: "මුල් පිටුවට",
+      notFound: "මෙම පුවත් සොයාගත නොහැකි විය.",
+      gallery: "ඡායාරූප එකතුව",
     },
     faq: {
       title: "නිතර අසන ප්‍රශ්න",
@@ -451,6 +559,7 @@ export const translations: Translations = {
       home: "முகப்பு",
       about: "எங்களை பற்றி",
       leadership: "தலைமைத்துவம்",
+      news: "செய்திகள்",
       inAction: "செயலில்",
       videos: "வீடியோக்கள்",
       joinUs: "எங்களுடன் சேரவும்",
@@ -486,6 +595,17 @@ export const translations: Translations = {
       youtube: "யூடியூப்",
       whatsapp: "வாட்ஸ்அப்",
     },
+    location: {
+      title: "எங்கள் தலைமையகம்",
+      subtitle:
+        "GNOA தலைமையகத்தை கண்டறியுங்கள் — வரைபடத்தில் பார்த்து Google Maps வழிகாட்டலைப் பெறுங்கள்.",
+      badge: "தலைமையகம்",
+      officeName: "GNOA தலைமையகம்",
+      address:
+        "அரசு தாதி அலுவலர் சங்கம் (GNOA)\nகொழும்பு, இலங்கை",
+      openMaps: "Google Maps-இல் திறக்க",
+      mapTitle: "GNOA தலைமையக இட வரைபடம்",
+    },
     testimonial: {
       title: "செயலில் GNOA",
       subtitle:
@@ -507,6 +627,17 @@ export const translations: Translations = {
       noPhotosInSession: "இந்த அமர்வில் புகைப்படங்கள் இல்லை.",
       fbFull: "பேஸ்புக்கில் எங்களை பின்தொடருங்கள்",
       fbShort: "பேஸ்புக்",
+      featured: "முதன்மை அமர்வு",
+      viewPhotos: "புகைப்படங்களைப் பார்",
+      viewingPhotos: "புகைப்படங்கள் கீழே காட்டப்படுகின்றன",
+      showMore: "மேலும் காட்டு",
+      showLess: "குறைவாக காட்டு",
+      selectedSession: "இப்போது பார்க்கிறீர்கள்",
+      viewAll: "அனைத்து அமர்வுகளையும் காண",
+      backToGallery: "தொகுப்புகளுக்குத் திரும்பு",
+      backHome: "முகப்புக்குத் திரும்பு",
+      notFound: "இந்த புகைப்பட அமர்வு கிடைக்கவில்லை.",
+      photoGallery: "புகைப்படங்கள்",
     },
     videos: {
       title: "எங்கள் வீடியோக்களை பார்க்க",
@@ -516,6 +647,20 @@ export const translations: Translations = {
       empty: "வீடியோக்கள் கிடைக்கவில்லை.",
       ytFull: "YouTube-இல் எங்கள் சேனலுக்கு சந்தாதாரராகுங்கள்",
       ytShort: "யூடியூப்",
+    },
+    news: {
+      title: "சமீபத்திய செய்திகள்",
+      subtitle:
+        "GNOA-வின் அறிவிப்புகள், நிகழ்வுகள் மற்றும் தாதி அலுவலர்களுக்கு முக்கியமான கதைகள் இங்கே.",
+      loading: "செய்திகள் ஏற்றப்படுகின்றன...",
+      empty: "இன்னும் செய்திகள் வெளியிடப்படவில்லை. விரைவில் மீண்டும் பாருங்கள்.",
+      featured: "முதன்மை கதை",
+      readMore: "கதையை வாசிக்க",
+      viewAll: "அனைத்து செய்திகளையும் காண",
+      backToNews: "செய்திகளுக்குத் திரும்பு",
+      backHome: "முகப்புக்குத் திரும்பு",
+      notFound: "இந்த செய்தி கிடைக்கவில்லை.",
+      gallery: "புகைப்பட தொகுப்பு",
     },
     faq: {
       title: "அடிக்கடி கேட்கப்படும் கேள்விகள்",

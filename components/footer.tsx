@@ -45,7 +45,7 @@ export default function Footer() {
                                 href="https://www.facebook.com/gnoa.nhsl/" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 transition-all duration-300 hover:scale-105" 
+                                className="flex items-center gap-2 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105" 
                                 style={{ color: '#762727' }}
                             >
                                 <FacebookIcon size={20} />
@@ -55,7 +55,7 @@ export default function Footer() {
                                 href="https://www.youtube.com/@gnoa2976/featured" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 transition-all duration-300 hover:scale-105" 
+                                className="flex items-center gap-2 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105" 
                                 style={{ color: '#762727' }}
                             >
                                 <YoutubeIcon size={20} />
@@ -65,7 +65,7 @@ export default function Footer() {
                                 href={WHATSAPP_HREF}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 underline-offset-2 transition-all duration-300 hover:scale-105 hover:underline"
+                                className="flex items-center gap-2 underline-offset-2 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105 hover:underline"
                                 style={{ color: "#762727" }}
                             >
                                 <WhatsAppIcon size={20} />

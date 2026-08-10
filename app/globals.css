@@ -1,14 +1,56 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: var(--font-urbanist), 'Urbanist', sans-serif;
     --font-urbanist: 'Urbanist', sans-serif;
 }
 
 @layer base {
+    html {
+        scroll-behavior: auto;
+    }
+
     body {
         @apply bg-white text-sm text-gray-800 antialiased;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+        .reveal-content {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+}
+
+/* Lightweight scroll reveals — opacity (+ optional translate), no layout thrash */
+.reveal-content {
+    opacity: 0;
+    transition: opacity var(--reveal-duration, 0.28s) ease-out var(--reveal-delay, 0s);
+    will-change: opacity;
+    backface-visibility: hidden;
+}
+
+.reveal-content.reveal-move {
+    transform: var(--reveal-offset, translateY(16px));
+    transition:
+        opacity var(--reveal-duration, 0.28s) ease-out var(--reveal-delay, 0s),
+        transform var(--reveal-duration, 0.28s) ease-out var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+}
+
+.reveal-content.is-revealed {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
 }
 
 @keyframes slideDown {
@@ -50,5 +92,27 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(1.25rem) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes dialogIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }

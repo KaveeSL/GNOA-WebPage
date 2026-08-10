@@ -1,14 +1,7 @@
-import { Inter, Urbanist } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
-import Navbar from "@/components/navbar";
 import LenisScroll from "@/components/lenis";
-import Footer from "@/components/footer";
-
-const inter = Inter({
-    variable: "--font-sans",
-    subsets: ["latin"],
-});
 
 const urbanist = Urbanist({
     variable: "--font-urbanist",
@@ -66,8 +59,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body>
+        <html lang="en" className={urbanist.variable}>
+            <head>
+                <link rel="preload" as="image" href="/assets/hero-gradient-bg.png" fetchPriority="high" />
+                <link rel="preload" as="image" href="/assets/bgimg.webp" fetchPriority="high" />
+            </head>
+            <body className={`${urbanist.className} antialiased`}>
                 <LenisScroll />
                 {children}
             </body>

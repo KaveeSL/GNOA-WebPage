@@ -6,6 +6,8 @@ import OurTeamSection from "@/sections/our-team";
 import StatsSection from "@/sections/stats-section";
 import GallerySection from "@/sections/gallery-section";
 import VideosSection from "@/sections/videos-section";
+import NewsSection from "@/sections/news-section";
+import LocationSection from "@/sections/location-section";
 
 export default function Page() {
     return (
@@ -14,10 +16,12 @@ export default function Page() {
             <StatsSection />
             <FeaturesSection />
             <MembershipSection />
+            <NewsSection />
             <VideosSection />
             <FaqSection />
             <OurTeamSection />
             <GallerySection />
+            <LocationSection />
         </main>
     );
 }

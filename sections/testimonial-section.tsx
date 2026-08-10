@@ -105,20 +105,20 @@ export default function TestimonialSection() {
                         <div className="mt-24 w-full max-w-7xl mx-auto px-4 md:hidden">
                             <div className="relative overflow-hidden">
                                 <div 
-                                    className="flex transition-transform duration-700 ease-in-out"
+                                    className="flex transition-transform duration-200 ease-in-out"
                                     style={{ transform: `translateX(-${mobileIndex * 100}%)` }}
                                 >
                                     {photoCards.map((card, index) => (
                                     <div key={card.id || index} className="flex-shrink-0 w-full px-2">
-                                        <div className="group relative overflow-hidden rounded-xl bg-white border border-gray-200 transition-all duration-300 hover:scale-105 cursor-pointer" onClick={() => setSelectedCard(card)}>
+                                        <div className="group relative overflow-hidden rounded-xl bg-white border border-gray-200 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105 cursor-pointer" onClick={() => setSelectedCard(card)}>
                                             <div className="relative h-64 overflow-hidden">
                                                 <Image
                                                     src={card.image}
                                                     alt={card.title}
                                                     fill
-                                                    className="object-cover transition-transform duration-300 group-hover:scale-110"
+                                                    className="object-cover transition-transform duration-200 group-hover:scale-110"
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                                                 {card.category && (
                                                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold text-white backdrop-blur-sm" style={{ backgroundColor: 'rgba(118, 39, 39, 0.8)' }}>
                                                         {card.category}
@@ -157,8 +157,8 @@ export default function TestimonialSection() {
                                         backgroundColor: '#E6E9ED',
                                         willChange: isActive ? 'flex, border-radius, margin' : 'auto',
                                         transition: isActive 
-                                            ? 'flex 0.7s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.7s cubic-bezier(0.23, 1, 0.32, 1), margin 0.7s cubic-bezier(0.23, 1, 0.32, 1)'
-                                            : 'flex 0.7s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.7s cubic-bezier(0.23, 1, 0.32, 1), margin 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+                                            ? 'flex 0.35s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.35s cubic-bezier(0.23, 1, 0.32, 1), margin 0.35s cubic-bezier(0.23, 1, 0.32, 1)'
+                                            : 'flex 0.35s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.35s cubic-bezier(0.23, 1, 0.32, 1), margin 0.35s cubic-bezier(0.23, 1, 0.32, 1)',
                                         backfaceVisibility: 'hidden',
                                         WebkitBackfaceVisibility: 'hidden',
                                         transform: 'translateZ(0)',
@@ -181,7 +181,7 @@ export default function TestimonialSection() {
                                             background: isActive 
                                                 ? 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%)'
                                                 : 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%)',
-                                            transition: 'background 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+                                            transition: 'background 0.35s cubic-bezier(0.23, 1, 0.32, 1)',
                                             pointerEvents: 'none'
                                         }}
                                     />
@@ -195,8 +195,8 @@ export default function TestimonialSection() {
                                             height: isActive ? 'auto' : '40px',
                                             willChange: isActive ? 'bottom, left, height' : 'auto',
                                             transition: isActive 
-                                                ? 'bottom 0.7s cubic-bezier(0.23, 1, 0.32, 1), left 0.7s cubic-bezier(0.23, 1, 0.32, 1), height 0.7s cubic-bezier(0.23, 1, 0.32, 1)'
-                                                : 'bottom 0.7s cubic-bezier(0.23, 1, 0.32, 1), left 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+                                                ? 'bottom 0.35s cubic-bezier(0.23, 1, 0.32, 1), left 0.35s cubic-bezier(0.23, 1, 0.32, 1), height 0.35s cubic-bezier(0.23, 1, 0.32, 1)'
+                                                : 'bottom 0.35s cubic-bezier(0.23, 1, 0.32, 1), left 0.35s cubic-bezier(0.23, 1, 0.32, 1)',
                                             backfaceVisibility: 'hidden',
                                             WebkitBackfaceVisibility: 'hidden',
                                             transform: 'translateZ(0)',
@@ -226,7 +226,7 @@ export default function TestimonialSection() {
                                                 transform: isActive ? 'translate3d(0, 0, 0)' : 'translate3d(20px, 0, 0)',
                                                 pointerEvents: isActive ? 'auto' : 'none',
                                                 willChange: 'opacity, transform',
-                                                transition: 'opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.15s',
+                                                transition: 'opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0.05s, transform 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0.05s',
                                                 backfaceVisibility: 'hidden',
                                                 WebkitBackfaceVisibility: 'hidden'
                                             }}
@@ -237,7 +237,7 @@ export default function TestimonialSection() {
                                             <div 
                                                 className="relative text-sm line-clamp-2"
                                                 style={{
-                                                    transition: 'opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.25s'
+                                                    transition: 'opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1) 0.08s'
                                                 }}
                                             >
                                                 {card.description}
@@ -263,13 +263,13 @@ export default function TestimonialSection() {
                         onClick={() => setSelectedCard(null)}
                     >
                         <div 
-                            className="relative max-w-4xl w-full max-h-[90vh] bg-white/95 backdrop-blur-md rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.20)] overflow-hidden transition-all duration-300"
+                            className="relative max-w-4xl w-full max-h-[90vh] bg-white/95 backdrop-blur-md rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.20)] overflow-hidden transition-[transform,opacity,colors,background-color,box-shadow] duration-200"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Close Button */}
                             <button
                                 onClick={() => setSelectedCard(null)}
-                                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg transition-all duration-300 hover:scale-110 hover:bg-white"
+                                className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-110 hover:bg-white"
                                 style={{ color: '#762727' }}
                                 aria-label="Close"
                             >
@@ -307,7 +307,7 @@ export default function TestimonialSection() {
                     href="https://www.facebook.com/gnoa.nhsl/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="mt-20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-white text-xs md:text-sm font-medium transition-all duration-300 hover:opacity-90 flex items-center gap-1.5 justify-center" 
+                    className="mt-20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-white text-xs md:text-sm font-medium transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:opacity-90 flex items-center gap-1.5 justify-center" 
                     style={{ backgroundColor: '#1877F2' }}
                 >
                     <FacebookIcon size={14} className="md:w-4 md:h-4" />

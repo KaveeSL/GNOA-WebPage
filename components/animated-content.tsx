@@ -1,10 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import React, { useEffect, useRef } from 'react';
 
 interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
@@ -26,110 +22,94 @@ interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
     onDisappearanceComplete?: () => void;
 }
 
+/**
+ * Lightweight scroll reveal — CSS + IntersectionObserver only.
+ * No GSAP/ScrollTrigger (those were fighting sticky layout and Lenis during scroll).
+ */
 const AnimatedContent: React.FC<AnimatedContentProps> = ({
     children,
-    container,
-    distance = 100,
+    distance = 16,
     direction = 'vertical',
     reverse = false,
-    duration = 0.8,
-    ease = 'power3.out',
-    initialOpacity = 0,
-    animateOpacity = true,
-    scale = 1,
-    threshold = 0.1,
+    duration = 0.28,
     delay = 0,
-    disappearAfter = 0,
-    disappearDuration = 0.5,
-    disappearEase = 'power3.in',
-    onComplete,
-    onDisappearanceComplete,
+    threshold = 0.12,
     className = '',
+    style,
+    onComplete,
+    // unused legacy props kept for call-site compatibility
+    container: _container,
+    ease: _ease,
+    initialOpacity: _initialOpacity,
+    animateOpacity: _animateOpacity,
+    scale: _scale,
+    disappearAfter: _disappearAfter,
+    disappearDuration: _disappearDuration,
+    disappearEase: _disappearEase,
+    onDisappearanceComplete: _onDisappearanceComplete,
     ...props
 }) => {
     const ref = useRef<HTMLDivElement>(null);
+    const axis = direction === 'horizontal' ? 'X' : 'Y';
+    const offset = reverse ? -distance : distance;
 
     useEffect(() => {
         const el = ref.current;
         if (!el) return;
 
-        let scrollerTarget: Element | string | null = container || document.getElementById('snap-main-container') || null;
-
-        if (typeof scrollerTarget === 'string') {
-            scrollerTarget = document.querySelector(scrollerTarget);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            el.classList.add('is-revealed');
+            onComplete?.();
+            return;
         }
 
-        const axis = direction === 'horizontal' ? 'x' : 'y';
-        const offset = reverse ? -distance : distance;
-        const startPct = (1 - threshold) * 100;
+        // Already in view on first paint — show immediately (no scroll jank on load)
+        const rect = el.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight * (1 - threshold) && rect.bottom > 0;
+        if (inView) {
+            // slight delay so first paint stays stable
+            const id = window.setTimeout(() => {
+                el.classList.add('is-revealed');
+                onComplete?.();
+            }, Math.max(0, delay * 1000));
+            return () => window.clearTimeout(id);
+        }
 
-        gsap.set(el, {
-            [axis]: offset,
-            scale,
-            opacity: animateOpacity ? initialOpacity : 1,
-            visibility: 'visible'
-        });
-
-        const tl = gsap.timeline({
-            paused: true,
-            delay,
-            onComplete: () => {
-                if (onComplete) onComplete();
-                if (disappearAfter > 0) {
-                    gsap.to(el, {
-                        [axis]: reverse ? distance : -distance,
-                        scale: 0.8,
-                        opacity: animateOpacity ? initialOpacity : 0,
-                        delay: disappearAfter,
-                        duration: disappearDuration,
-                        ease: disappearEase,
-                        onComplete: () => onDisappearanceComplete?.()
-                    });
+        const io = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry?.isIntersecting) return;
+                el.classList.add('is-revealed');
+                io.disconnect();
+                if (onComplete) {
+                    window.setTimeout(onComplete, (delay + duration) * 1000);
                 }
+            },
+            {
+                threshold: Math.min(threshold, 0.2),
+                rootMargin: '0px 0px -8% 0px',
             }
-        });
+        );
 
-        tl.to(el, {
-            [axis]: 0,
-            scale: 1,
-            opacity: 1,
-            duration,
-            ease
-        });
-
-        const st = ScrollTrigger.create({
-            trigger: el,
-            scroller: scrollerTarget || window,
-            start: `top ${startPct}%`,
-            once: true,
-            onEnter: () => tl.play()
-        });
-
-        return () => {
-            st.kill();
-            tl.kill();
-        };
-    }, [
-        container,
-        distance,
-        direction,
-        reverse,
-        duration,
-        ease,
-        initialOpacity,
-        animateOpacity,
-        scale,
-        threshold,
-        delay,
-        disappearAfter,
-        disappearDuration,
-        disappearEase,
-        onComplete,
-        onDisappearanceComplete
-    ]);
+        io.observe(el);
+        return () => io.disconnect();
+    }, [delay, duration, threshold, onComplete]);
 
     return (
-        <div ref={ref} className={`invisible ${className}`} {...props}>
+        <div
+            ref={ref}
+            className={`reveal-content ${distance !== 0 ? 'reveal-move' : ''} ${className}`}
+            style={
+                {
+                    '--reveal-duration': `${duration}s`,
+                    '--reveal-delay': `${delay}s`,
+                    ...(distance !== 0
+                        ? { '--reveal-offset': `translate${axis}(${offset}px)` }
+                        : null),
+                    ...style,
+                } as React.CSSProperties
+            }
+            {...props}
+        >
             {children}
         </div>
     );

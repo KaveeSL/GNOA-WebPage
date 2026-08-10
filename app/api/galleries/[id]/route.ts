@@ -2,6 +2,42 @@ import { NextRequest, NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
 
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const [galleries] = await pool.execute(
+      'SELECT * FROM photo_galleries WHERE id = ?',
+      [id]
+    );
+    const galleryList = galleries as {
+      id: number;
+      title: string;
+      description: string | null;
+      display_order: number;
+    }[];
+
+    if (!galleryList.length) {
+      return NextResponse.json({ error: 'Gallery not found' }, { status: 404 });
+    }
+
+    const [photos] = await pool.execute(
+      'SELECT * FROM gallery_photos WHERE gallery_id = ? ORDER BY display_order ASC, id ASC',
+      [id]
+    );
+
+    return NextResponse.json({
+      ...galleryList[0],
+      photos,
+    });
+  } catch (error) {
+    console.error('Error fetching gallery:', error);
+    return NextResponse.json({ error: 'Failed to fetch gallery' }, { status: 500 });
+  }
+}
+
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

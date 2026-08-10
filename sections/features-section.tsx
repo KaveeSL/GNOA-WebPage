@@ -20,12 +20,12 @@ export default function FeaturesSection() {
                             title={translations[language].features.title}
                             subtitle={translations[language].features.subtitle}
                         />
-                        <AnimatedContent className="p-4 md:p-6 w-full rounded-xl mt-12 transition-all duration-300 hover:scale-105" style={{ backgroundColor: '#762727' }}>
+                        <AnimatedContent distance={0} className="p-4 md:p-6 w-full rounded-xl mt-12" style={{ backgroundColor: '#762727' }}>
                             <p className="text-lg text-white">
                                 {translations[language].features.highlight}
                             </p>
 
-                            <a href="#team" className="bg-white w-max hover:bg-gray-100 px-5 py-2 rounded-full mt-6 flex items-center gap-1 transition-all duration-300" >
+                            <a href="#team" className="bg-white w-max hover:bg-gray-100 px-5 py-2 rounded-full mt-6 flex items-center gap-1" >
                                 {translations[language].features.highlightCta}
                                 <ArrowUpRightIcon size={20} />
                             </a>
@@ -39,8 +39,8 @@ export default function FeaturesSection() {
                         const description = cardT?.description ?? feature.description;
 
                         return (
-                            <AnimatedContent key={index} delay={index * 0.1} className={`${feature.cardBg} flex flex-col items-start p-6 rounded-xl w-full md:sticky md:top-26 transition-all duration-300 hover:shadow-lg hover:scale-105`}>
-                                <div className={`p-2 text-white rounded-md transition-transform duration-300 hover:scale-110 ${feature.iconBg === 'bg-[#762727]' ? '' : feature.iconBg}`} style={feature.iconBg === 'bg-[#762727]' ? { backgroundColor: '#762727' } : {}}>
+                            <AnimatedContent key={index} delay={index * 0.04} distance={0} className={`${feature.cardBg} flex flex-col items-start p-6 rounded-xl w-full md:sticky md:top-26`}>
+                                <div className={`p-2 text-white rounded-md ${feature.iconBg === 'bg-[#762727]' ? '' : feature.iconBg}`} style={feature.iconBg === 'bg-[#762727]' ? { backgroundColor: '#762727' } : {}}>
                                     <feature.icon />
                                 </div>
                                 <p className="text-base font-medium mt-4">{title}</p>

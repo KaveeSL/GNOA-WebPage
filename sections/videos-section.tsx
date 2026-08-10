@@ -128,7 +128,7 @@ export default function VideosSection() {
                                 <button
                                     type="button"
                                     onClick={slidePrev}
-                                    className="absolute left-0 top-[28%] md:top-[32%] -translate-y-1/2 z-10 p-2 md:p-3 rounded-full border-2 bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl -translate-x-1 md:-translate-x-4"
+                                    className="absolute left-0 top-[28%] md:top-[32%] -translate-y-1/2 z-10 p-2 md:p-3 rounded-full border-2 bg-white shadow-lg transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105 hover:shadow-xl -translate-x-1 md:-translate-x-4"
                                     style={{ borderColor: "#762727", color: "#762727" }}
                                     aria-label="Previous videos"
                                 >
@@ -137,7 +137,7 @@ export default function VideosSection() {
                                 <button
                                     type="button"
                                     onClick={slideNext}
-                                    className="absolute right-0 top-[28%] md:top-[32%] -translate-y-1/2 z-10 p-2 md:p-3 rounded-full border-2 bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl translate-x-1 md:translate-x-4"
+                                    className="absolute right-0 top-[28%] md:top-[32%] -translate-y-1/2 z-10 p-2 md:p-3 rounded-full border-2 bg-white shadow-lg transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:scale-105 hover:shadow-xl translate-x-1 md:translate-x-4"
                                     style={{ borderColor: "#762727", color: "#762727" }}
                                     aria-label="Next videos"
                                 >
@@ -148,7 +148,7 @@ export default function VideosSection() {
 
                         <div className="overflow-hidden">
                         <div
-                            className="flex transition-transform duration-700 ease-in-out"
+                            className="flex transition-transform duration-300 ease-out"
                             style={{
                                 transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
                             }}
@@ -166,7 +166,7 @@ export default function VideosSection() {
                                             type="button"
                                             onClick={() => isValid && setSelectedVideo(video)}
                                             disabled={!isValid}
-                                            className="group relative w-full aspect-video rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed text-left"
+                                            className="group relative w-full aspect-video rounded-xl overflow-hidden shadow-lg transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed text-left"
                                             style={{ focusRingColor: "#762727" } as React.CSSProperties}
                                         >
                                             {isValid ? (
@@ -174,12 +174,12 @@ export default function VideosSection() {
                                                     <img
                                                         src={`https://img.youtube.com/vi/${cleanVideoId}/hqdefault.jpg`}
                                                         alt={video.title}
-                                                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                                                     />
-                                                    <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors duration-300" />
+                                                    <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors duration-200" />
                                                     <div className="absolute inset-0 flex items-center justify-center">
                                                         <div
-                                                            className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg transition-transform duration-300 group-hover:scale-110"
+                                                            className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-lg transition-transform duration-200 group-hover:scale-110"
                                                             style={{ backgroundColor: "rgba(118, 39, 39, 0.9)" }}
                                                         >
                                                             <PlayIcon
@@ -231,7 +231,7 @@ export default function VideosSection() {
                                         key={i}
                                         type="button"
                                         onClick={() => setCurrentIndex(i)}
-                                        className="h-2 rounded-full transition-all duration-300"
+                                        className="h-2 rounded-full transition-[transform,opacity,colors,background-color,box-shadow] duration-200"
                                         style={{
                                             width: currentIndex === i ? "1.5rem" : "0.5rem",
                                             backgroundColor:
@@ -289,7 +289,7 @@ export default function VideosSection() {
                     href="https://www.youtube.com/@gnoa2976/featured"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-white text-xs md:text-sm font-medium transition-all duration-300 hover:opacity-90 flex items-center gap-1.5 justify-center"
+                    className="mt-20 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-white text-xs md:text-sm font-medium transition-[transform,opacity,colors,background-color,box-shadow] duration-200 hover:opacity-90 flex items-center gap-1.5 justify-center"
                     style={{ backgroundColor: "#FF0000" }}
                 >
                     <YoutubeIcon size={14} className="md:w-4 md:h-4" />

@@ -37,7 +37,7 @@ export default function WhatsAppFloat() {
       aria-live="polite"
     >
       <div
-        className={`relative max-w-[min(16rem,calc(100vw-5rem))] rounded-2xl border border-[#762727]/15 bg-white px-3.5 py-2.5 text-xs leading-snug text-gray-800 shadow-lg shadow-[#762727]/10 transition-all duration-500 md:text-sm ${
+        className={`relative max-w-[min(16rem,calc(100vw-5rem))] rounded-2xl border border-[#762727]/15 bg-white px-3.5 py-2.5 text-xs leading-snug text-gray-800 shadow-lg shadow-[#762727]/10 transition-[transform,opacity,colors,background-color,box-shadow] duration-200 md:text-sm ${
           showHint
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none translate-y-1 opacity-0"
@@ -61,7 +61,7 @@ export default function WhatsAppFloat() {
           if (!sessionStorage.getItem(HINT_SESSION_KEY)) return;
           openHint();
         }}
-        className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-emerald-900/25 ring-2 ring-white/30 transition-transform duration-300 hover:scale-105 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] md:h-[3.75rem] md:w-[3.75rem]"
+        className="group flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-emerald-900/25 ring-2 ring-white/30 transition-transform duration-200 hover:scale-105 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] md:h-[3.75rem] md:w-[3.75rem]"
         aria-label={t.chatAria}
         title={t.chatAria}
       >

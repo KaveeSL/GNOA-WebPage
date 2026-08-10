@@ -6,11 +6,12 @@ import {
   TrashIcon,
   UploadIcon,
   ImagesIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
   XIcon,
   FolderPlusIcon,
   ImagePlusIcon,
+  HelpCircleIcon,
 } from "lucide-react";
 import { toast } from "@/components/toast";
 import ConfirmDialog from "@/components/confirm-dialog";
@@ -24,6 +25,7 @@ interface GalleryManagerProps {
 
 export default function GalleryManager({ galleries, onRefresh }: GalleryManagerProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pendingSelectIdRef = useRef<number | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(
     galleries.length > 0 ? galleries[0].id : null
   );
@@ -45,9 +47,24 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
   useEffect(() => {
     if (galleries.length === 0) {
       setSelectedId(null);
+      pendingSelectIdRef.current = null;
       return;
     }
     const sorted = [...galleries].sort((a, b) => a.display_order - b.display_order);
+
+    // After creating a session, keep that one selected (don't jump back to the top)
+    const pending = pendingSelectIdRef.current;
+    if (pending != null && sorted.some((g) => g.id === pending)) {
+      setSelectedId(pending);
+      pendingSelectIdRef.current = null;
+      requestAnimationFrame(() => {
+        document
+          .getElementById(`gallery-session-${pending}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      return;
+    }
+
     if (!selectedId || !sorted.some((g) => g.id === selectedId)) {
       setSelectedId(sorted[0].id);
     }
@@ -94,10 +111,15 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
         return;
       }
 
-      toast.success(editingGallery ? "Session updated" : "Session created");
+      toast.success(editingGallery ? "Session updated" : "Session created — now add photos");
+      const createdId =
+        !editingGallery && data.id != null ? Number(data.id) : null;
+      if (createdId != null && !Number.isNaN(createdId)) {
+        pendingSelectIdRef.current = createdId;
+        setSelectedId(createdId);
+      }
       resetSessionForm();
       onRefresh();
-      if (!editingGallery && data.id) setSelectedId(data.id);
     } catch {
       toast.error("Failed to save session");
     }
@@ -272,11 +294,11 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold" style={{ color: "#762727" }}>
+          <h2 className="text-lg md:text-xl font-bold" style={{ color: "#762727" }}>
             Photo Galleries
           </h2>
           <p className="text-sm text-gray-600 mt-1">
-            Create event sessions, then upload multiple photos to each one.
+            Create an event session first, then upload photos into it.
           </p>
         </div>
         <button
@@ -285,75 +307,124 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
             resetSessionForm();
             setShowSessionForm(true);
           }}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-white text-sm font-semibold transition-all hover:scale-105 hover:shadow-lg"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-white text-sm font-semibold w-full sm:w-auto"
           style={{ backgroundColor: "#762727" }}
         >
           <FolderPlusIcon size={16} />
-          New Session
+          New session
         </button>
       </div>
 
-      {/* Session form */}
+      {!showSessionForm && (
+        <div className="rounded-xl border border-[#762727]/20 bg-[#762727]/[0.04] p-4 sm:p-5 mb-6">
+          <div className="flex items-start gap-2 mb-3">
+            <HelpCircleIcon size={18} className="text-[#762727] mt-0.5 flex-shrink-0" />
+            <p className="text-sm font-semibold text-[#762727]">How to use (quick guide)</p>
+          </div>
+          <ol className="text-sm text-gray-700 space-y-2 list-decimal pl-5">
+            <li>
+              Click <strong>New session</strong> and name the event (e.g. Annual Conference 2026).
+            </li>
+            <li>
+              Select that session on the left, then use <strong>Upload photos</strong> (multiple at once).
+            </li>
+            <li>
+              Use <strong>Move up / Move down</strong> to change session order on the website.
+            </li>
+          </ol>
+        </div>
+      )}
+
+      {/* Session form — same stepped style as News */}
       {showSessionForm && (
-        <div
-          className="bg-white rounded-2xl shadow-lg p-5 md:p-6 mb-6 border-2"
-          style={{ borderColor: "#762727" }}
+        <form
+          onSubmit={handleSaveSession}
+          className="bg-white rounded-xl border-2 border-[#762727] p-4 sm:p-6 mb-6 space-y-6 shadow-sm"
         >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold" style={{ color: "#762727" }}>
-              {editingGallery ? "Edit Session" : "Create New Session"}
-            </h3>
-            <button type="button" onClick={resetSessionForm} className="text-gray-500 hover:text-gray-700">
-              <XIcon size={20} />
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-bold text-base sm:text-lg text-[#762727]">
+                {editingGallery ? "Edit session" : "Create a new session"}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                A session is one event or conference. You upload photos into it after creating.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={resetSessionForm}
+              className="p-2 rounded-full hover:bg-gray-100 flex-shrink-0"
+              aria-label="Close form"
+            >
+              <XIcon size={18} />
             </button>
           </div>
-          <form onSubmit={handleSaveSession} className="space-y-4">
+
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold flex items-center gap-2 text-[#762727]">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#762727] text-white text-xs">
+                1
+              </span>
+              Name the session
+            </legend>
             <div>
-              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#762727" }}>
-                Session / Conference Title *
+              <label className="block text-xs font-semibold mb-1.5 text-gray-800">
+                Session / conference title <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
                 value={sessionForm.title}
                 onChange={(e) => setSessionForm({ ...sessionForm, title: e.target.value })}
                 placeholder="e.g. Annual Nursing Conference 2026"
-                className="w-full px-4 py-2.5 text-sm border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-1"
-                style={{ borderColor: "#762727" }}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#762727]/30"
                 required
               />
+              <p className="mt-1 text-[11px] text-gray-500">Shown as the gallery heading on the website.</p>
             </div>
+          </fieldset>
+
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-bold flex items-center gap-2 text-[#762727]">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#762727] text-white text-xs">
+                2
+              </span>
+              Optional details
+            </legend>
             <div>
-              <label className="block text-sm font-semibold mb-1.5" style={{ color: "#762727" }}>
-                Short Description
+              <label className="block text-xs font-semibold mb-1.5 text-gray-800">
+                Short description <span className="text-gray-400 font-normal">(optional)</span>
               </label>
               <textarea
                 value={sessionForm.description}
                 onChange={(e) => setSessionForm({ ...sessionForm, description: e.target.value })}
-                placeholder="Brief description of this event or session..."
-                rows={2}
-                className="w-full px-4 py-2.5 text-sm border-2 rounded-xl focus:outline-none resize-none"
-                style={{ borderColor: "#762727" }}
+                placeholder="Brief description of this event or session…"
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#762727]/30 resize-none"
               />
             </div>
-            <div className="flex gap-3">
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-full text-white text-sm font-semibold"
-                style={{ backgroundColor: "#762727" }}
-              >
-                {editingGallery ? "Save Changes" : "Create Session"}
-              </button>
-              <button
-                type="button"
-                onClick={resetSessionForm}
-                className="px-5 py-2 rounded-full border-2 text-sm font-semibold"
-                style={{ borderColor: "#762727", color: "#762727" }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
+          </fieldset>
+
+          <div className="rounded-xl border border-[#762727]/15 bg-[#762727]/[0.04] p-3 text-xs text-gray-600">
+            <strong className="text-[#762727]">Next step:</strong> after you save, select this session and
+            upload photos from the panel on the right.
+          </div>
+
+          <div className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-3 pt-1">
+            <button
+              type="button"
+              onClick={resetSessionForm}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full border-2 border-[#762727] text-sm font-semibold text-[#762727]"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full text-white text-sm font-semibold bg-[#762727]"
+            >
+              {editingGallery ? "Save changes" : "Create session"}
+            </button>
+          </div>
+        </form>
       )}
 
       {sortedGalleries.length === 0 ? (
@@ -380,6 +451,7 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
               return (
                 <div
                   key={gallery.id}
+                  id={`gallery-session-${gallery.id}`}
                   className={`rounded-xl border-2 transition-all cursor-pointer ${
                     isSelected ? "shadow-md" : "border-gray-200 hover:border-gray-300"
                   }`}
@@ -387,36 +459,39 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
                   onClick={() => setSelectedId(gallery.id)}
                 >
                   <div className="p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-bold text-sm truncate" style={{ color: "#762727" }}>
-                          {gallery.title}
-                        </h4>
-                        {gallery.description && (
-                          <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{gallery.description}</p>
-                        )}
-                        <span className="text-xs text-gray-400 mt-1 inline-block">
-                          {count} photo{count !== 1 ? "s" : ""}
-                        </span>
-                      </div>
-                      <div className="flex flex-col gap-0.5" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          type="button"
-                          onClick={() => handleMoveSession(gallery.id, "up")}
-                          disabled={index === 0}
-                          className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
-                        >
-                          <ChevronUpIcon size={14} style={{ color: "#762727" }} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleMoveSession(gallery.id, "down")}
-                          disabled={index === sortedGalleries.length - 1}
-                          className="p-1 rounded hover:bg-gray-100 disabled:opacity-30"
-                        >
-                          <ChevronDownIcon size={14} style={{ color: "#762727" }} />
-                        </button>
-                      </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-sm truncate" style={{ color: "#762727" }}>
+                        {gallery.title}
+                      </h4>
+                      {gallery.description && (
+                        <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{gallery.description}</p>
+                      )}
+                      <span className="text-xs text-gray-400 mt-1 inline-block">
+                        {count} photo{count !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                    <div
+                      className="flex flex-wrap gap-1.5 mt-3"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleMoveSession(gallery.id, "up")}
+                        disabled={index === 0}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-30"
+                      >
+                        <ArrowUpIcon size={12} />
+                        Up
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleMoveSession(gallery.id, "down")}
+                        disabled={index === sortedGalleries.length - 1}
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold border border-gray-200 hover:bg-gray-50 disabled:opacity-30"
+                      >
+                        <ArrowDownIcon size={12} />
+                        Down
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -526,7 +601,7 @@ export default function GalleryManager({ galleries, onRefresh }: GalleryManagerP
                           <button
                             type="button"
                             onClick={() => handleDeletePhoto(photo.id)}
-                            className="absolute top-1.5 right-1.5 p-1.5 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                            className="absolute top-1.5 right-1.5 p-1.5 rounded-full bg-red-500 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-lg"
                             title="Remove photo"
                           >
                             <TrashIcon size={14} />

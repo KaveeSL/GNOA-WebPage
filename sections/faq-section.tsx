@@ -33,11 +33,11 @@ export default function FaqSection() {
                             const answer = tItem?.answer ?? faq.answer;
 
                             return (
-                                <AnimatedContent key={index}>
+                                <AnimatedContent key={index} distance={0}>
                                     <details className="group bg-gray-50 border border-gray-200 rounded-xl" open={index === 0}>
                                         <summary className="flex items-center justify-between p-6 select-none">
                                             <h3 className="font-medium text-base">{question}</h3>
-                                            <ChevronDownIcon size={20} className="group-open:rotate-180" />
+                                            <ChevronDownIcon size={20} className="group-open:rotate-180 transition-transform duration-200" />
                                         </summary>
                                         <p className="text-sm/6 text-zinc-500 max-w-md p-6 pt-0">
                                             {answer}
@@ -48,7 +48,7 @@ export default function FaqSection() {
                         })}
                     </div>
                     <div className="p-4 pt-20 md:p-20">
-                        <div className="md:sticky md:top-30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-6 w-full rounded-xl mt-12 transition-all duration-300 hover:scale-105" style={{ backgroundColor: '#762727' }}>
+                        <div className="md:sticky md:top-30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-5 p-4 sm:p-6 w-full rounded-xl mt-12" style={{ backgroundColor: '#762727' }}>
                             <h3 className="text-base sm:text-lg text-white text-balance pr-2">
                                 {translations[language].faq.helpText}
                             </h3>
@@ -57,7 +57,7 @@ export default function FaqSection() {
                                 href={WHATSAPP_HREF}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#762727] shadow-md transition-all duration-300 hover:scale-105 hover:bg-red-50/80 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#762727] shadow-md transition-transform duration-200 hover:scale-105 hover:bg-red-50/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                                 aria-label={translations[language].faq.whatsappAria}
                                 title={translations[language].faq.whatsappAria}
                             >

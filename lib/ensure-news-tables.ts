@@ -1,0 +1,32 @@
+import pool from '@/lib/db';
+
+let ensured = false;
+
+/** Create news tables if missing (safe for existing DBs). */
+export async function ensureNewsTables() {
+  if (ensured) return;
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS news (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      summary TEXT,
+      content TEXT NOT NULL,
+      is_published BOOLEAN DEFAULT TRUE,
+      display_order INT DEFAULT 0,
+      published_at TIMESTAMP NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )
+  `);
+  await pool.execute(`
+    CREATE TABLE IF NOT EXISTS news_images (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      news_id INT NOT NULL,
+      image VARCHAR(500) NOT NULL,
+      display_order INT DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (news_id) REFERENCES news(id) ON DELETE CASCADE
+    )
+  `);
+  ensured = true;
+}
