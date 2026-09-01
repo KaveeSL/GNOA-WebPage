@@ -36,6 +36,46 @@ export interface ITeamMember {
     role: string;
 };
 
+export type CommitteeRoleKey =
+    | "president"
+    | "secretary"
+    | "treasurer"
+    | "nationalOrganizer"
+    | "vicePresident"
+    | "viceSecretary"
+    | "viceTreasurer"
+    | "coOrganizer"
+    | "legalAdvisor"
+    | "internationalCoordinator"
+    | "member"
+    | "provincialOrganizer"
+    | "organizer";
+
+export type ProvinceKey =
+    | "central"
+    | "southern"
+    | "uva"
+    | "eastern"
+    | "northern"
+    | "northWestern"
+    | "sabaragamuwa"
+    | "northCentral"
+    | "western";
+
+export interface ICommitteeMember {
+    name: string;
+    nameSi?: string;
+    roleKey: CommitteeRoleKey;
+    roleNumber?: number;
+    image?: string;
+    acting?: boolean;
+}
+
+export interface IProvinceCommittee {
+    provinceKey: ProvinceKey;
+    members: ICommitteeMember[];
+}
+
 export interface IPricingPlan {
     icon: LucideIcon;
     name: string;

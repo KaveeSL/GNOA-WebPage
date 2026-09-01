@@ -125,6 +125,61 @@ type Translations = {
     team: {
       title: string;
       subtitle: string;
+      viewFull: string;
+    };
+    committee: {
+      title: string;
+      subtitle: string;
+      backHome: string;
+      officeBearers: string;
+      deputyLeadership: string;
+      vicePresidents: string;
+      viceSecretaries: string;
+      viceTreasurer: string;
+      coOrganizers: string;
+      advisors: string;
+      members: string;
+      provincialBoard: string;
+      specialCommittees: string;
+      womensForum: string;
+      youthCommittee: string;
+      sportsCommittee: string;
+      acting: string;
+      jumpNav: {
+        office: string;
+        deputies: string;
+        coOrganizers: string;
+        advisors: string;
+        members: string;
+        provinces: string;
+        forums: string;
+      };
+      roles: {
+        president: string;
+        secretary: string;
+        treasurer: string;
+        nationalOrganizer: string;
+        vicePresident: string;
+        viceSecretary: string;
+        viceTreasurer: string;
+        coOrganizer: string;
+        legalAdvisor: string;
+        internationalCoordinator: string;
+        member: string;
+        provincialOrganizer: string;
+        organizer: string;
+      };
+      provinces: {
+        central: string;
+        southern: string;
+        uva: string;
+        eastern: string;
+        northern: string;
+        northWestern: string;
+        sabaragamuwa: string;
+        northCentral: string;
+        western: string;
+      };
     };
     banner: {
       dismiss: string;
@@ -338,6 +393,62 @@ export const translations: Translations = {
       title: "Executive Committee",
       subtitle:
         "Dedicated leaders representing 31,000+ nursing officers across Sri Lanka's public healthcare system.",
+      viewFull: "View Full Executive Committee",
+    },
+    committee: {
+      title: "Executive Committee Members",
+      subtitle:
+        "National office bearers, provincial boards, and special committees serving nursing officers across Sri Lanka.",
+      backHome: "Back to Leadership",
+      officeBearers: "National Office Bearers",
+      deputyLeadership: "Deputy Leadership",
+      vicePresidents: "Vice Presidents",
+      viceSecretaries: "Vice Secretaries",
+      viceTreasurer: "Vice Treasurer",
+      coOrganizers: "Co-Organizers",
+      advisors: "Legal Advisors & International Coordination",
+      members: "Executive Committee Members",
+      provincialBoard: "Provincial Organization Board",
+      specialCommittees: "Special Committees",
+      womensForum: "Women's Forum",
+      youthCommittee: "Youth Committee",
+      sportsCommittee: "Sports Committee",
+      acting: "Acting",
+      jumpNav: {
+        office: "Office Bearers",
+        deputies: "Deputies",
+        coOrganizers: "Co-Organizers",
+        advisors: "Advisors",
+        members: "Members",
+        provinces: "Provinces",
+        forums: "Committees",
+      },
+      roles: {
+        president: "President",
+        secretary: "Secretary",
+        treasurer: "Treasurer",
+        nationalOrganizer: "National Organizer",
+        vicePresident: "Vice President",
+        viceSecretary: "Vice Secretary",
+        viceTreasurer: "Vice Treasurer",
+        coOrganizer: "Co-Organizer",
+        legalAdvisor: "Legal Advisor",
+        internationalCoordinator: "International Coordinator",
+        member: "Committee Member",
+        provincialOrganizer: "Provincial Organizer",
+        organizer: "Organizer",
+      },
+      provinces: {
+        central: "Central Province",
+        southern: "Southern Province",
+        uva: "Uva Province",
+        eastern: "Eastern Province",
+        northern: "Northern Province",
+        northWestern: "North Western Province",
+        sabaragamuwa: "Sabaragamuwa Province",
+        northCentral: "North Central Province",
+        western: "Western Province",
+      },
     },
     banner: {
       dismiss: "Dismiss",
@@ -543,6 +654,62 @@ export const translations: Translations = {
       title: "නිර්වාහක කමිටුව",
       subtitle:
         "ශ්‍රී ලංකාවේ රජයේ සෞඛ්‍ය පද්ධතිය පුරා හෙද නිලධාරින් 31,000කට අධික සංඛ්‍යාවක් නියෝජනය කරන කැපවුණු නායකත්වය.",
+      viewFull: "සම්පූර්ණ නිර්වාහක කමිටුව බලන්න",
+    },
+    committee: {
+      title: "නිර්වාහක කමිටු සාමාජිකයින්",
+      subtitle:
+        "ශ්‍රී ලංකාව පුරා හෙද නිලධාරීන්ට සේවය කරන ජාතික තනතුරුධාරීන්, පළාත් මණ්ඩල සහ විශේෂ කමිටු.",
+      backHome: "නායකත්වය වෙත ආපසු",
+      officeBearers: "ජාතික තනතුරුධාරීන්",
+      deputyLeadership: "උප නායකත්වය",
+      vicePresidents: "උප සභාපතිවරු",
+      viceSecretaries: "උප ලේකම්වරු",
+      viceTreasurer: "උප භාණ්ඩාගාරික",
+      coOrganizers: "සහ සංවිධායකයින්",
+      advisors: "නීති උපදේශකයින් සහ ජාත්‍යන්තර සම්බන්ධීකරණය",
+      members: "නිර්වාහක කමිටු සාමාජිකයින්",
+      provincialBoard: "පළාත් සංවිධාන මණ්ඩලය",
+      specialCommittees: "විශේෂ කමිටු",
+      womensForum: "කාන්තා සංසදය",
+      youthCommittee: "යොවුන් කමිටුව",
+      sportsCommittee: "ක්‍රීඩා කමිටුව",
+      acting: "වැඩබලන",
+      jumpNav: {
+        office: "තනතුරුධාරීන්",
+        deputies: "උප නායකයින්",
+        coOrganizers: "සහ සංවිධායකයින්",
+        advisors: "උපදේශකයින්",
+        members: "සාමාජිකයින්",
+        provinces: "පළාත්",
+        forums: "කමිටු",
+      },
+      roles: {
+        president: "සභාපති",
+        secretary: "ලේකම්",
+        treasurer: "භාණ්ඩාගාරික",
+        nationalOrganizer: "ජාතික සංවිධායක",
+        vicePresident: "උප සභාපති",
+        viceSecretary: "උප ලේකම්",
+        viceTreasurer: "උප භාණ්ඩාගාරික",
+        coOrganizer: "සහ සංවිධායක",
+        legalAdvisor: "නීති උපදේශක",
+        internationalCoordinator: "ජාත්‍යන්තර සම්බන්ධීකාරක",
+        member: "කමිටු සාමාජික",
+        provincialOrganizer: "පළාත් සංවිධායක",
+        organizer: "සංවිධායක",
+      },
+      provinces: {
+        central: "මධ්‍යම පළාත",
+        southern: "දකුණු පළාත",
+        uva: "ඌව පළාත",
+        eastern: "නැගෙනහිර පළාත",
+        northern: "උතුරු පළාත",
+        northWestern: "වයඹ පළාත",
+        sabaragamuwa: "සබරගමුව පළාත",
+        northCentral: "උතුරු මැද පළාත",
+        western: "බස්නාහිර පළාත",
+      },
     },
     banner: {
       dismiss: "අවලංගු කරන්න",
@@ -748,6 +915,62 @@ export const translations: Translations = {
       title: "நிர்வாகக் குழு",
       subtitle:
         "இலங்கை அரசு சுகாதார அமைப்பில் பணிபுரியும் 31,000-க்கும் மேற்பட்ட தாதி அலுவலர்களை பிரதிநிதித்துவப்படுத்தும் அர்ப்பணிப்பான தலைமைத்துவம்.",
+      viewFull: "முழு நிர்வாகக் குழுவைக் காண",
+    },
+    committee: {
+      title: "நிர்வாகக் குழு உறுப்பினர்கள்",
+      subtitle:
+        "இலங்கை முழுவதும் தாதி அலுவலர்களுக்கு சேவை செய்யும் தேசிய பதவிதாரர்கள், மாகாண சபைகள் மற்றும் சிறப்புக் குழுக்கள்.",
+      backHome: "தலைமைத்துவத்திற்குத் திரும்பு",
+      officeBearers: "தேசிய பதவிதாரர்கள்",
+      deputyLeadership: "துணைத் தலைமைத்துவம்",
+      vicePresidents: "துணைத் தலைவர்கள்",
+      viceSecretaries: "துணைச் செயலாளர்கள்",
+      viceTreasurer: "துணைப் பொருளாளர்",
+      coOrganizers: "இணை அமைப்பாளர்கள்",
+      advisors: "சட்ட ஆலோசகர்கள் மற்றும் சர்வதேச ஒருங்கிணைப்பு",
+      members: "நிர்வாகக் குழு உறுப்பினர்கள்",
+      provincialBoard: "மாகாண அமைப்பு சபை",
+      specialCommittees: "சிறப்புக் குழுக்கள்",
+      womensForum: "மகளிர் மன்றம்",
+      youthCommittee: "இளைஞர் குழு",
+      sportsCommittee: "விளையாட்டுக் குழு",
+      acting: "பதில்",
+      jumpNav: {
+        office: "பதவிதாரர்கள்",
+        deputies: "துணைத் தலைவர்கள்",
+        coOrganizers: "இணை அமைப்பாளர்கள்",
+        advisors: "ஆலோசகர்கள்",
+        members: "உறுப்பினர்கள்",
+        provinces: "மாகாணங்கள்",
+        forums: "குழுக்கள்",
+      },
+      roles: {
+        president: "தலைவர்",
+        secretary: "செயலாளர்",
+        treasurer: "பொருளாளர்",
+        nationalOrganizer: "தேசிய அமைப்பாளர்",
+        vicePresident: "துணைத் தலைவர்",
+        viceSecretary: "துணைச் செயலாளர்",
+        viceTreasurer: "துணைப் பொருளாளர்",
+        coOrganizer: "இணை அமைப்பாளர்",
+        legalAdvisor: "சட்ட ஆலோசகர்",
+        internationalCoordinator: "சர்வதேச ஒருங்கிணைப்பாளர்",
+        member: "குழு உறுப்பினர்",
+        provincialOrganizer: "மாகாண அமைப்பாளர்",
+        organizer: "அமைப்பாளர்",
+      },
+      provinces: {
+        central: "மத்திய மாகாணம்",
+        southern: "தென் மாகாணம்",
+        uva: "ஊவா மாகாணம்",
+        eastern: "கிழக்கு மாகாணம்",
+        northern: "வட மாகாணம்",
+        northWestern: "வடமேல் மாகாணம்",
+        sabaragamuwa: "சப்ரகமுவ மாகாணம்",
+        northCentral: "வட மத்திய மாகாணம்",
+        western: "மேல் மாகாணம்",
+      },
     },
     banner: {
       dismiss: "மூடு",
